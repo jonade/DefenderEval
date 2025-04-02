@@ -27,10 +27,58 @@
 
 #> 
 
+Function Invoke-ModuleVersionCheck {
+    # Determines if the module is up to date
+    
+    $GalleryVersion = Find-Module DefenderEval
+    $InstalledVersion = Get-Module DefenderEval
+
+    If($GalleryVersion.Version -gt $InstalledVersion.Version) {
+        Write-Host "$(Get-Date) The loaded version of the DefenderEval module ($($InstalledVersion.Version)) is older than the latest version in the PSGallery ($($GalleryVersion.Version)). Attempting to upgrade to the latest version."
+        $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+
+        if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+            $InstallArguments = @{
+                Scope = "AllUsers"
+            }
+        }
+        else {
+            $InstallArguments = @{
+                Scope = "CurrentUser"
+            }
+        }
+        
+        Try {
+            Install-Module DefenderEval -Force -AllowClobber @InstallArguments
+        } Catch {
+            Write-Error "Error while trying to upgrade the module. Try running Update-Module DefenderEval"
+        }
+        
+
+        # Uninstall old versions
+        $Modules = (Get-Module DefenderEval -ListAvailable | Sort-Object Version -Descending)
+        $Latest = $Modules[0]
+
+        If($Modules.Count -gt 1) {
+            ForEach($Module in $Modules) {
+                If($Module.Version -ne $Latest.Version) {
+                    # Not the latest version, remove it.
+                    Write-Host "$(Get-Date) Uninstalling $($Module.Name) Version $($Module.Version)"
+                    Try {
+                        Uninstall-Module $Module.Name -RequiredVersion $($Module.Version) -ErrorAction:Stop
+                    } Catch {}
+                }
+            }
+        }
+    }
+}
+
 Function Invoke-CheckDefenderRecommendations {
     param (
 
     )
+
+    Invoke-ModuleVersionCheck
 
     $Results = @()
 
