@@ -426,7 +426,6 @@ function Invoke-GenerateReport {
 
     $Folder = (Get-Item .).FullName
     $OutFile = "DefenderEval_$(Get-Date -Format ("yyyymmdd-HHmmss")).html"
-    #$OutFile = "DefenderEval.html" # Static report for testing
     $FilePath = Join-Path -Path $Folder -ChildPath $OutFile
 
     $output | Out-File -FilePath $FilePath
