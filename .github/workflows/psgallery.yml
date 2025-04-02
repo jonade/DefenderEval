@@ -19,7 +19,7 @@ jobs:
       run: |
         .\.github\build\build.ps1
         Update-ModuleManifest -Path ".\DefenderEval\DefenderEval.psd1" -ModuleVersion ($env:MODULE_VER).TrimStart("v")
-        Publish-Module -Path ".\DefenderEval" -NuGetApiKey $env:NUGET_KEY -Verbose
+        Publish-Module -Path ".\DefenderEval" -NuGetApiKey $env:NUGET_KEY -Verbose -Force
     - name: Push commit
       run: |
         git config --global user.name 'github-actions'
