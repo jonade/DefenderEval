@@ -366,32 +366,31 @@ function Invoke-GenerateReport {
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 
-        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/css/bootstrap.min.css' integrity='sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T' crossorigin='anonymous'>
+        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH' crossorigin='anonymous'>
 
         <title>$ReportTitle</title>
     </head>
       <body>
-        <div class='jumbotron jumbotron-fluid'>
-            <div class='container'>
-                <h1 class='display-4'>$ReportHeading</h1>
-                <p class='lead'>$IntroText</p>
+        <div class='container my-5'>
+            <div class='position-relative p-5 text-center text-muted bg-dark-subtle border border-dashed rounded-5'>
+                <h1 class='text-body-emphasis'>$ReportHeading</h1>
+                <p class='col-lg-10 mx-auto mb-4'>$IntroText</p>
                 <a class='btn btn-primary btn-lg' href='https://learn.microsoft.com/en-us/defender-endpoint/evaluate-microsoft-defender-antivirus' role='button' target='_blank'>Learn more</a>
                 <div class='text-right'>Report generated: $((get-date).ToString("dd MMMM yyyy - HH:mm:ss"))</div>
             </div>
         </div>
 
-        <script src='https://code.jquery.com/jquery-3.3.1.slim.min.js' integrity='sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo' crossorigin='anonymous'></script>
-        <script src='https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
-        <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
+        <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js' integrity='sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r' crossorigin='anonymous'></script>
+        <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js' integrity='sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy' crossorigin='anonymous'></script>
     "
     
     # Loop each Topic
     foreach ($Topic in ($Results | Group-Object Topic)){
         $output += "<div class='card m-3'>
-            <h5 class='card-header'>$($Topic.Name)</h5>
+            <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
         <div class='card-body'>
-        <table class='table table-borderless table-hover'>
-            <thead><tr>
+        <table class='table table-hover'>
+            <thead class='table-light'><tr>
                 <th scope='col'></th>
                 <th scope='col'>Feature</th>
                 <th scope='col'>Current Value</th>
@@ -404,10 +403,10 @@ function Invoke-GenerateReport {
         # Loop each Result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
             $output += "<tr><th scope='row'></th>
-                <td>$($Result.Check)</td>
-                <td>$($Result.Config)</td>
+                <td class='table-secondary'>$($Result.Check)</td>
+                <td class='table-secondary'>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
-                <td>$($Result.Description)</td>
+                <td class='table-secondary'>$($Result.Description)</td>
             </tr>"
         }
 
