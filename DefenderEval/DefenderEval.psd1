@@ -104,7 +104,7 @@ PrivateData = @{
         ProjectUri = 'https://github.com/jonade/DefenderEval'
 
         # A URL to an icon representing this module.
-        # IconUri = ''
+        IconUri = 'https://jonade.github.io/DefenderEval/defender.png'
 
         # ReleaseNotes of this module
         # ReleaseNotes = ''

@@ -43,7 +43,7 @@ Function Invoke-CheckDefenderRecommendations {
         default {$MAPSReporting = "Disabled"}
     }
 
-    if ($MAPSReporting -eq "Advanced") {$Result="Pass"} else {$Result="Fail"}
+    if ($MAPSReporting -eq "Advanced") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Cloud Protection"
@@ -61,7 +61,7 @@ Function Invoke-CheckDefenderRecommendations {
         4 {$SubmitType = "AlwaysPrompt"}
     }
 
-    if ($SubmitType -eq "AllSamples") {$Result="Pass"} else {$Result="Fail"}
+    if ($SubmitType -eq "AllSamples") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Cloud Protection"
@@ -76,7 +76,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$BAFS = "Disabled"}
         default {$BAFS = "Enabled"}
     }
-    if ($BAFS -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($BAFS -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Cloud Protection"
@@ -91,7 +91,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$IOAV = "Disabled"}
         default {$IOAV = "Enabled"}
     }
-    if ($IOAV -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($IOAV -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Cloud Protection"
@@ -111,8 +111,8 @@ Function Invoke-CheckDefenderRecommendations {
         default {$CloudBlockLevel = "Default"}
     }
     if ($CloudBlockLevel -eq "High" -or $CloudBlockLevel -eq "HighPlus" -or $CloudBlockLevel -eq "ZeroTolerance") {
-        $Result="Pass"
-    } else {$Result="Fail"}
+        $Result="Yes"
+    } else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Cloud Protection"
@@ -123,7 +123,7 @@ Function Invoke-CheckDefenderRecommendations {
     }
 
 
-    if ($MpPref.CloudExtendedTimeout -ge 50) {$Result="Pass"} else {$Result="Fail"}
+    if ($MpPref.CloudExtendedTimeout -ge 50) {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Cloud Protection"
@@ -139,7 +139,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$RTPMonitoring = "Disabled"}
         default {$RTPMonitoring = "Enabled"}
     }
-    if ($RTPMonitoring -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($RTPMonitoring -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Real-time Scanning"
@@ -154,7 +154,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$BehaviorMonitoring = "Disabled"}
         default {$BehaviorMonitoring = "Enabled"}
     }
-    if ($BehaviorMonitoring -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($BehaviorMonitoring -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Real-time Scanning"
@@ -169,7 +169,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$ScriptScanning = "Disabled"}
         default {$ScriptScanning = "Enabled"}
     }
-    if ($ScriptScanning -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($ScriptScanning -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Real-time Scanning"
@@ -184,7 +184,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$RemovableDriveScanning = "Disabled"}
         default {$RemovableDriveScanning = "Enabled"}
     }
-    if ($RemovableDriveScanning -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($RemovableDriveScanning -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Real-time Scanning"
@@ -202,7 +202,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$PUA = "Enabled"}
         2 {$PUA = "Audit"}
     }
-    if ($PUA -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($PUA -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Potentially Unwanted Application protection"
@@ -219,14 +219,14 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$ArchiveScan = "Disabled"}
         default {$ArchiveScan = "Enabled"}
     }
-    if ($ArchiveScan -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($ArchiveScan -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Email and archive scanning"
         Check="ArchiveScanning"
         Result=$Result
         Config=$ArchiveScan
-        Description= "Scan archives"
+        Description= "Scan files contained within archives"
     }
 
 
@@ -234,14 +234,14 @@ Function Invoke-CheckDefenderRecommendations {
         0 {$EmailScan = "Disabled"}
         default {$EmailScan = "Disabled"}
     }
-    if ($EmailScan -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($EmailScan -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Email and archive scanning"
         Check="EmailScanning"
         Result=$Result
         Config=$EmailScan
-        Description= "Scan email files"
+        Description= "Scan email stored within files (e.g. .PST)"
     }
 
 
@@ -254,7 +254,7 @@ Function Invoke-CheckDefenderRecommendations {
         3 {$CFA = "BlockDiskOnly"}
         4 {$CFA = "AuditDiskOnly"}
     }
-    if ($CFA -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($CFA -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Exploit protection"
@@ -270,7 +270,7 @@ Function Invoke-CheckDefenderRecommendations {
         1 {$NetworkProtection = "Enabled"}
         2 {$NetworkProtection = "Audit"}
     }
-    if ($NetworkProtection -eq "Enabled") {$Result="Pass"} else {$Result="Fail"}
+    if ($NetworkProtection -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic="Exploit protection"
@@ -331,13 +331,13 @@ Function Invoke-CheckDefenderRecommendations {
             6 {$ASRState = "Warn"}
         }
 
-        if ($ASRState -eq "Block") {$Result="Pass"} else {$Result="Fail"}
+        if ($ASRState -eq "Block") {$Result="Yes"} else {$Result="No"}
 
         $ASRName = $ASRDefinitions[$ASR.ID]
 
         $Results += New-Object -TypeName psobject -Property @{
             Topic="Exploit protection"
-            Check="ASR Rule ($($ASR.ID)"
+            Check="ASR Rule ($($ASR.ID))"
             Result=$Result
             Config=$ASRState
             Description=$ASRName
@@ -393,20 +393,20 @@ function Invoke-GenerateReport {
         <table class='table table-borderless table-hover'>
             <thead><tr>
                 <th scope='col'></th>
-                <th scope='col'>Option</th>
-                <th scope='col'>Configured</th>
-                <th scope='col'>Recommended</th>
+                <th scope='col'>Feature</th>
+                <th scope='col'>Current Value</th>
+                <th scope='col'>Follows Recommendation?</th>
                 <th scope='col'>Description</th>
             </tr></thead>
             <tbody>
-    "
+        "
 
         # Loop each Result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
             $output += "<tr><th scope='row'></th>
                 <td>$($Result.Check)</td>
                 <td>$($Result.Config)</td>
-                <td";if($($Result.Result -eq "Pass")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
+                <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
                 <td>$($Result.Description)</td>
             </tr>"
         }
@@ -424,8 +424,9 @@ function Invoke-GenerateReport {
 
     # Export the generated HTML file
 
-    $Folder = $PSScriptRoot
+    $Folder = (Get-Item .).FullName
     $OutFile = "DefenderEval_$(Get-Date -Format ("yyyymmdd-HHmmss")).html"
+    #$OutFile = "DefenderEval.html" # Static report for testing
     $FilePath = Join-Path -Path $Folder -ChildPath $OutFile
 
     $output | Out-File -FilePath $FilePath
