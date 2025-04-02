@@ -35,6 +35,23 @@ Function Invoke-CheckDefenderRecommendations {
     $Results = @()
 
     $MpPref = Get-MpPreference
+    $MpComputerStatus = Get-MpComputerStatus
+
+    # Tamper Protection
+    switch ($MpComputerStatus.IsTamperProtected) {
+        $true {$Tamper = "Enabled"}
+        $false {$Tamper = "Disabled"}
+    }
+
+    if ($Tamper -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic="Global"
+        Check="IsTamperProtected"
+        Result=$Result
+        Config=$Tamper
+        Description= "Prevents certain security settings, such as virus and threat protection, from being disabled or changed"
+    }
 
     # Cloud Protection - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#cloud-protection-features
 
