@@ -1,8 +1,36 @@
 #Requires -Version 5.1
-#Requires -Modules @{ModuleName="PowerShellGet"; ModuleVersion="2.2.4"}
+
+<#
+.SYNOPSIS
+    Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint
+
+.DESCRIPTION
 
 
-Function Invoke-CheckMDEPOCPrerequisites {
+.NOTES
+    Jonathan Devere-Ellery
+    Cloud Solution Architect - Microsoft
+
+
+##############################################################################################
+#This sample script is not supported under any Microsoft standard support program or service.
+#This sample script is provided AS IS without warranty of any kind.
+#Microsoft further disclaims all implied warranties including, without limitation, any implied
+#warranties of merchantability or of fitness for a particular purpose. The entire risk arising
+#out of the use or performance of the sample script and documentation remains with you. In no
+#event shall Microsoft, its authors, or anyone else involved in the creation, production, or
+#delivery of the scripts be liable for any damages whatsoever (including, without limitation,
+#damages for loss of business profits, business interruption, loss of business information,
+#or other pecuniary loss) arising out of the use of or inability to use the sample script or
+#documentation, even if Microsoft has been advised of the possibility of such damages.
+##############################################################################################
+
+#> 
+
+Function Invoke-CheckDefenderRecommendations {
+    param (
+
+    )
 
     $Results = @()
 
@@ -284,8 +312,8 @@ Function Invoke-CheckMDEPOCPrerequisites {
     $MappedASR = @()
     $i = 0
 
+    # Map both the ASR ID and Action within the same array
     foreach ($ASRId in $ASRIds) {
-        #$MappedASR.Add($ASRId,$ASRActions[$i])
         $MappedASR += New-Object -TypeName psobject -Property @{
             ID=$ASRId
             Action=$ASRActions[$i]
@@ -326,9 +354,9 @@ function Invoke-GenerateReport {
         $Results
     )
 
-    $ReportTitle = "MDE POC Evaluation"
-    $ReportHeading = "MDE POC Evaluation"
-    $IntroText = "Verify whether MDAV settings are following the evaluation recommendations."
+    $ReportTitle = "Defender Evaluation report"
+    $ReportHeading = "Defender Evaluation report"
+    $IntroText = "Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint."
 
      # Output start
      $output += "<!doctype html>
@@ -356,10 +384,6 @@ function Invoke-GenerateReport {
         <script src='https://cdn.jsdelivr.net/npm/popper.js@1.14.7/dist/umd/popper.min.js' integrity='sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1' crossorigin='anonymous'></script>
         <script src='https://cdn.jsdelivr.net/npm/bootstrap@4.3.1/dist/js/bootstrap.min.js' integrity='sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM' crossorigin='anonymous'></script>
     "
-
-
-
-    $output += ""
     
     # Loop each Topic
     foreach ($Topic in ($Results | Group-Object Topic)){
@@ -386,14 +410,25 @@ function Invoke-GenerateReport {
                 <td>$($Result.Description)</td>
             </tr>"
         }
+
         $output += "</tbody></table></div></div>"
     }
 
 
+    # End of the report
     $output += "
     </body>
     </html>
     "
 
-    $output | Out-File -FilePath "C:\Temp\MDEPOC.html"
+
+    # Export the generated HTML file
+
+    $Folder = $PSScriptRoot
+    $OutFile = "DefenderEval_$(Get-Date -Format ("yyyymmdd-HHmmss")).html"
+    $FilePath = Join-Path -Path $Folder -ChildPath $OutFile
+
+    $output | Out-File -FilePath $FilePath
+
+    Invoke-Expression "&'$FilePath'"
 }
