@@ -443,7 +443,7 @@ function Invoke-GenerateReport {
     $ReportTitle = "Defender Evaluation report"
     $ReportHeading = "Defender Evaluation report"
     $IntroText = "Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint."
-    $ModuleInfo = (Get-Module -Name DefenderEval).Version
+    [version]$ModuleInfo = (Get-Module -Name DefenderEval | Select -First 1).Version
 
      # Output start
      $output += "<!doctype html>
