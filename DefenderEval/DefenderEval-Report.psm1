@@ -54,7 +54,7 @@ Function Invoke-ModuleVersionCheck {
         }
         
         Try {
-            Install-Module DefenderEval -Force -AllowClobber @InstallArguments
+            Update-Module DefenderEval -Force @InstallArguments
         } Catch {
             Write-Error "Error while trying to upgrade the module. Try running Update-Module DefenderEval"
         }
