@@ -476,7 +476,7 @@ function Invoke-GenerateReport {
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
         <div class='card-body'>
-        <table class='table table-hover table-striped'>
+        <table class='table table-hover table-striped mb-1'>
             <thead class='table-light'><tr>
                 <th scope='col'></th>
                 <th scope='col'>Feature</th>
@@ -505,7 +505,7 @@ function Invoke-GenerateReport {
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Ex)</h5>
-                <table class='table table-hover table-striped'>
+                <table class='table table-hover table-striped mb-0'>
                     <tbody>"
 
         # Define how to add a new row to the Exclusions tables
