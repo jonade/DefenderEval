@@ -422,6 +422,7 @@ function Invoke-GenerateReport {
     $ReportTitle = "Defender Evaluation report"
     $ReportHeading = "Defender Evaluation report"
     $IntroText = "Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint."
+    $ModuleInfo = (Get-Module -Name DefenderEval).Version
 
      # Output start
      $output += "<!doctype html>
@@ -444,7 +445,6 @@ function Invoke-GenerateReport {
                 <div class='text-right'>Report generated: $((get-date).ToString("dd MMMM yyyy - HH:mm:ss"))</div>
             </div>
         </div>
-
         <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js' integrity='sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r' crossorigin='anonymous'></script>
         <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js' integrity='sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy' crossorigin='anonymous'></script>
     "
@@ -481,6 +481,9 @@ function Invoke-GenerateReport {
 
     # End of the report
     $output += "
+        <div class='card m-3 card-body text-center border-light text-body-secondary'>
+            <p>Version: $ModuleInfo</p>
+        </div>
     </body>
     </html>
     "
