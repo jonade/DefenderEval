@@ -534,7 +534,7 @@ function Invoke-GenerateReport {
     # End of the report
     $output += "
         <div class='card m-3 card-body text-center border-light text-body-secondary'>
-            <p>Version: $ModuleInfo</p>
+            <p><a href='https://aka.ms/DefenderEval' class='link-secondary'>Version: $ModuleInfo</a></p>
         </div>
     </body>
     </html>
