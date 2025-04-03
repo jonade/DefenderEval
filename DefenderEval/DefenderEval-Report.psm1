@@ -441,7 +441,7 @@ function Invoke-GenerateReport {
             <div class='position-relative p-5 text-center text-muted bg-dark-subtle border border-dashed rounded-5'>
                 <h1 class='text-body-emphasis'>$ReportHeading</h1>
                 <p class='col-lg-10 mx-auto mb-4'>$IntroText</p>
-                <a class='btn btn-primary px-4 mb-4' href='https://learn.microsoft.com/en-us/defender-endpoint/evaluate-microsoft-defender-antivirus' role='button' target='_blank'>Learn more</a>
+                <a class='btn btn-primary px-4 mb-4' href='https://aka.ms/mdavevaluate' role='button' target='_blank'>Learn more</a>
                 <div class='text-right'>Report generated: $((get-date).ToString("dd MMMM yyyy - HH:mm:ss"))</div>
             </div>
         </div>
