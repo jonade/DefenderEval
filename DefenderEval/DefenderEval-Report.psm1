@@ -27,6 +27,12 @@
 
 #> 
 
+Function Get-RunningElevated {
+    $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
+    Return $currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)
+}
+
+
 Function Invoke-ModuleVersionCheck {
     # Determines if the module is up to date
     
@@ -35,9 +41,8 @@ Function Invoke-ModuleVersionCheck {
 
     If($GalleryVersion.Version -gt $InstalledVersion.Version) {
         Write-Host "$(Get-Date) The loaded version of the DefenderEval module ($($InstalledVersion.Version)) is older than the latest version in the PSGallery ($($GalleryVersion.Version)). Attempting to upgrade to the latest version."
-        $currentPrincipal = New-Object Security.Principal.WindowsPrincipal([Security.Principal.WindowsIdentity]::GetCurrent())
 
-        if ($currentPrincipal.IsInRole([Security.Principal.WindowsBuiltInRole]::Administrator)) {
+        if (Get-RunningElevated) {
             $InstallArguments = @{
                 Scope = "AllUsers"
             }
@@ -80,6 +85,10 @@ Function Invoke-CheckDefenderRecommendations {
 
     # Prechecks
     Invoke-ModuleVersionCheck
+    
+    if ((Get-RunningElevated) -eq $false) {
+        throw "PowerShell must be run as an administrator to be able to collect data from the machine."
+    }
 
     $Results = @()
     $MpPref = Get-MpPreference
