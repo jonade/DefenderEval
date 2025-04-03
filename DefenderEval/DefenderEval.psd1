@@ -95,7 +95,7 @@ PrivateData = @{
     PSData = @{
 
         # Tags applied to this module. These help with module discovery in online galleries.
-        Tags = 'DefenderForEndpoint','MDE','POC','evaluation','Security','XDR','MicrosoftDefender'
+        Tags = 'DefenderForEndpoint','MDE','evaluation','Security','XDR','MicrosoftDefender','POC'
 
         # A URL to the license for this module.
         # LicenseUri = ''
