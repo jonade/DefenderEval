@@ -424,9 +424,23 @@ Function Invoke-CheckDefenderRecommendations {
         $Results += New-Object -TypeName psobject -Property @{
             Topic="Exploit protection"
             Check="ASR Rule ($($ASR.ID))"
+            ASR=$ASR.ID
             Result=$Result
             Config=$ASRState
             Description=$ASRName
+        }
+    }
+
+    # Ensure that rows are added to the results if any defined ASR rules are missing
+    foreach ($ASRDefinition in $($ASRDefinitions.GetEnumerator())) {
+        if ($Results.ASR -notcontains $($ASRDefinition.Name)) {
+            $Results += New-Object -TypeName psobject -Property @{
+                Topic="Exploit protection"
+                Check="ASR Rule ($($ASRDefinition.Name))"
+                Result="No"
+                Config="Missing"
+                Description=$($ASRDefinition.Value)
+            }
         }
     }
 
