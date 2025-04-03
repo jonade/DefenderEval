@@ -422,6 +422,7 @@ function Invoke-GenerateReport {
     $ReportTitle = "Defender Evaluation report"
     $ReportHeading = "Defender Evaluation report"
     $IntroText = "Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint."
+    $ModuleInfo = (Get-Module -Name DefenderEval).Version
 
      # Output start
      $output += "<!doctype html>
@@ -444,7 +445,6 @@ function Invoke-GenerateReport {
                 <div class='text-right'>Report generated: $((get-date).ToString("dd MMMM yyyy - HH:mm:ss"))</div>
             </div>
         </div>
-
         <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js' integrity='sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r' crossorigin='anonymous'></script>
         <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js' integrity='sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy' crossorigin='anonymous'></script>
     "
@@ -454,7 +454,7 @@ function Invoke-GenerateReport {
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
         <div class='card-body'>
-        <table class='table table-hover'>
+        <table class='table table-hover table-striped'>
             <thead class='table-light'><tr>
                 <th scope='col'></th>
                 <th scope='col'>Feature</th>
@@ -468,10 +468,10 @@ function Invoke-GenerateReport {
         # Loop each Result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
             $output += "<tr><th scope='row'></th>
-                <td class='table-secondary'>$($Result.Check)</td>
-                <td class='table-secondary'>$($Result.Config)</td>
+                <td>$($Result.Check)</td>
+                <td>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
-                <td class='table-secondary'>$($Result.Description)</td>
+                <td>$($Result.Description)</td>
             </tr>"
         }
 
@@ -481,6 +481,9 @@ function Invoke-GenerateReport {
 
     # End of the report
     $output += "
+        <div class='card m-3 card-body text-center border-light text-body-secondary'>
+            <p>Version: $ModuleInfo</p>
+        </div>
     </body>
     </html>
     "
