@@ -454,7 +454,7 @@ function Invoke-GenerateReport {
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
         <div class='card-body'>
-        <table class='table table-hover'>
+        <table class='table table-hover table-striped'>
             <thead class='table-light'><tr>
                 <th scope='col'></th>
                 <th scope='col'>Feature</th>
@@ -468,10 +468,10 @@ function Invoke-GenerateReport {
         # Loop each Result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
             $output += "<tr><th scope='row'></th>
-                <td class='bg-body-tertiary'>$($Result.Check)</td>
-                <td class='bg-body-tertiary'>$($Result.Config)</td>
+                <td>$($Result.Check)</td>
+                <td>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
-                <td class='bg-body-tertiary'>$($Result.Description)</td>
+                <td>$($Result.Description)</td>
             </tr>"
         }
 
