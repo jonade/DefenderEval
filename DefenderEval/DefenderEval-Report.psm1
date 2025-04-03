@@ -78,13 +78,15 @@ Function Invoke-CheckDefenderRecommendations {
 
     )
 
+    # Prechecks
     Invoke-ModuleVersionCheck
 
     $Results = @()
-
     $MpPref = Get-MpPreference
     $MpComputerStatus = Get-MpComputerStatus
 
+
+    # Evaluate Settings
     # Tamper Protection
     switch ($MpComputerStatus.IsTamperProtected) {
         $true {$Tamper = "Enabled"}
@@ -100,6 +102,16 @@ Function Invoke-CheckDefenderRecommendations {
         Config=$Tamper
         Description= "Prevents certain security settings, such as virus and threat protection, from being disabled or changed"
     }
+
+
+    # Collect details of configured Exclusions
+    $Exclusions = @{
+        'Excluded Paths' = @($MpPref.ExclusionPath)
+        'Excluded Processes' = @($MpPref.ExclusionExtension)
+        'Excluded Extensions' = @($MpPref.ExclusionExtension)
+        'Excluded IPs' = @($MpPref.ExclusionIpAddress)
+    }
+
 
     # Cloud Protection - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#cloud-protection-features
 
@@ -448,6 +460,7 @@ function Invoke-GenerateReport {
         <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js' integrity='sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r' crossorigin='anonymous'></script>
         <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js' integrity='sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy' crossorigin='anonymous'></script>
     "
+
     
     # Loop each Topic
     foreach ($Topic in ($Results | Group-Object Topic)){
@@ -476,6 +489,36 @@ function Invoke-GenerateReport {
         }
 
         $output += "</tbody></table></div></div>"
+    }
+
+    # Add details of Exclusions configured
+    foreach ($Ex in $Exclusions.keys){
+        # Add one table for each exclusion type        
+        $output += "<div class='card m-3'>
+            <h5 class='card-header bg-dark-subtle'>$($Ex)</h5>
+                <table class='table table-hover table-striped'>
+                    <tbody>"
+
+        # Define how to add a new row to the Exclusions tables
+        $Row = "<tr>
+        <td scope='row'><ReplaceMe></td></tr>
+        "
+
+        if ($($Exclusions.$Ex).Count -eq 0) {
+            # Add a single row indicating there are no exclusions configured
+            $newRow = ($Row -replace ("<ReplaceMe>","None"))
+            $newRow = ($newRow -replace ("<td ","<td class='table-success'"))
+            $output += $newRow
+        } else {
+            # Add a row for each configured exclusion
+            foreach ($obj in ($Exclusions.$Ex)) {
+                $output += ($Row -replace ("<ReplaceMe>",$Obj))
+            }
+        }
+
+        $output += "
+            </tbody></table>
+            </div></div>"
     }
 
 
