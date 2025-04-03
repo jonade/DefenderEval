@@ -367,8 +367,8 @@ Function Invoke-CheckDefenderRecommendations {
     }
 
 
+    # Definitions to provide a friendly name in the report
     # https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference
-
     $ASRDefinitions = @{
         "56a863a9-875e-4185-98a7-b882c64b5ce5" = "Block abuse of exploited vulnerable signed drivers";
         "7674ba52-37eb-4a4f-a9a1-f0f9a1619a2c" = "Block Adobe Reader from creating child processes";
@@ -398,7 +398,7 @@ Function Invoke-CheckDefenderRecommendations {
     $MappedASR = @()
     $i = 0
 
-    # Map both the ASR ID and Action within the same array
+    # Map both the ASR ID and Action together within the same object
     foreach ($ASRId in $ASRIds) {
         $MappedASR += New-Object -TypeName psobject -Property @{
             ID=$ASRId
