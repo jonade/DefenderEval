@@ -468,10 +468,10 @@ function Invoke-GenerateReport {
         # Loop each Result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
             $output += "<tr><th scope='row'></th>
-                <td class='table-secondary'>$($Result.Check)</td>
-                <td class='table-secondary'>$($Result.Config)</td>
+                <td class='bg-body-tertiary'>$($Result.Check)</td>
+                <td class='bg-body-tertiary'>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
-                <td class='table-secondary'>$($Result.Description)</td>
+                <td class='bg-body-tertiary'>$($Result.Description)</td>
             </tr>"
         }
 
