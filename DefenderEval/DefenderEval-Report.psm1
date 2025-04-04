@@ -424,9 +424,23 @@ Function Invoke-CheckDefenderRecommendations {
         $Results += New-Object -TypeName psobject -Property @{
             Topic="Exploit protection"
             Check="ASR Rule ($($ASR.ID))"
+            ASR=$ASR.ID
             Result=$Result
             Config=$ASRState
             Description=$ASRName
+        }
+    }
+
+    # Ensure that rows are added to the results if any defined ASR rules are missing
+    foreach ($ASRDefinition in $($ASRDefinitions.GetEnumerator())) {
+        if ($Results.ASR -notcontains $($ASRDefinition.Name)) {
+            $Results += New-Object -TypeName psobject -Property @{
+                Topic="Exploit protection"
+                Check="ASR Rule ($($ASRDefinition.Name))"
+                Result="No"
+                Config="Missing"
+                Description=$($ASRDefinition.Value)
+            }
         }
     }
 
@@ -443,7 +457,7 @@ function Invoke-GenerateReport {
     $ReportTitle = "Defender Evaluation report"
     $ReportHeading = "Defender Evaluation report"
     $IntroText = "Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint."
-    [version]$ModuleInfo = (Get-Module -Name DefenderEval | Select -First 1).Version
+    [version]$ModuleInfo = (Get-Module -Name DefenderEval | Select-Object -First 1).Version
 
      # Output start
      $output += "<!doctype html>
@@ -476,7 +490,7 @@ function Invoke-GenerateReport {
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
         <div class='card-body'>
-        <table class='table table-hover table-striped'>
+        <table class='table table-hover table-striped mb-1'>
             <thead class='table-light'><tr>
                 <th scope='col'></th>
                 <th scope='col'>Feature</th>
@@ -507,7 +521,7 @@ function Invoke-GenerateReport {
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Ex)</h5>
-                <table class='table table-hover table-striped'>
+                <table class='table table-hover table-striped mb-0'>
                     <tbody>"
 
         # Define how to add a new row to the Exclusions tables
