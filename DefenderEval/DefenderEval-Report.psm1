@@ -41,20 +41,9 @@ Function Invoke-ModuleVersionCheck {
 
     If($GalleryVersion.Version -gt $InstalledVersion.Version) {
         Write-Host "$(Get-Date) The loaded version of the DefenderEval module ($($InstalledVersion.Version)) is older than the latest version in the PSGallery ($($GalleryVersion.Version)). Attempting to upgrade to the latest version."
-
-        if (Get-RunningElevated) {
-            $InstallArguments = @{
-                Scope = "AllUsers"
-            }
-        }
-        else {
-            $InstallArguments = @{
-                Scope = "CurrentUser"
-            }
-        }
         
         Try {
-            Update-Module DefenderEval -Force @InstallArguments
+            Update-Module DefenderEval -Force
         } Catch {
             Write-Error "Error while trying to upgrade the module. Try running Update-Module DefenderEval"
         }
