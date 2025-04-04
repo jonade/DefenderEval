@@ -137,6 +137,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$MAPSReporting
         Description= "Enable the Microsoft Defender Cloud for near-instant protection and increased protection"
+        Fix="Set-MpPreference -MAPSReporting Advanced"
     }
 
 
@@ -155,6 +156,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$SubmitType
         Description= "Automatically submit samples to increase group protection"
+        Fix="Set-MpPreference -SubmitSamplesConsent Always"
     }
 
 
@@ -170,6 +172,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$BAFS
         Description= "Always Use the cloud to block new malware within seconds"
+        Fix="Set-MpPreference -DisableBlockAtFirstSeen 0"
     }
 
 
@@ -185,6 +188,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$IOAV
         Description= "Scan all downloaded files and attachments"
+        Fix="Set-MpPreference -DisableIOAVProtection 0"
     }
 
 
@@ -206,6 +210,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$CloudBlockLevel
         Description= "Set cloud block level to at least 'High'"
+        Fix="Set-MpPreference -CloudBlockLevel High"
     }
 
 
@@ -217,6 +222,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$MpPref.CloudExtendedTimeout
         Description= "Set cloud block time-out to 1 minute"
+        Fix="Set-MpPreference -CloudExtendedTimeout 50"
     }
 
 
@@ -233,6 +239,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$RTPMonitoring
         Description= "Constantly monitor files and processes for known malware modifications"
+        Fix="Set-MpPreference -DisableRealtimeMonitoring 0"
     }
 
 
@@ -248,6 +255,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$BehaviorMonitoring
         Description= "Constantly monitor for known malware behaviors - even in 'clean' files and running programs"
+        Fix="Set-MpPreference -DisableBehaviorMonitoring 0"
     }
 
 
@@ -263,6 +271,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$ScriptScanning
         Description= "Scan scripts as soon as they're seen or run"
+        Fix="Set-MpPreference -DisableScriptScanning 0"
     }
 
 
@@ -278,6 +287,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$RemovableDriveScanning
         Description= "Scan removable drives as soon as they're inserted or mounted"
+        Fix="Set-MpPreference -DisableRemovableDriveScanning 0"
     }
 
 
@@ -296,6 +306,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$PUA
         Description= "Prevent grayware, adware, and other potentially unwanted apps from installing"
+        Fix="Set-MpPreference -PUAProtection Enabled"
     }
 
 
@@ -313,6 +324,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$ArchiveScan
         Description= "Scan files contained within archives"
+        Fix="Set-MpPreference -DisableArchiveScanning 0"
     }
 
 
@@ -328,6 +340,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$EmailScan
         Description= "Scan email stored within files (e.g. .PST)"
+        Fix="Set-MpPreference -DisableEmailScanning 0"
     }
 
 
@@ -348,6 +361,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$CFA
         Description= "Prevent malicious and suspicious apps (such as ransomware) from making changes to protected folders with Controlled folder access"
+        Fix="Set-MpPreference -EnableControlledFolderAccess Enabled"
     }
 
 
@@ -364,6 +378,7 @@ Function Invoke-CheckDefenderRecommendations {
         Result=$Result
         Config=$NetworkProtection
         Description= "Block connections to known bad IP addresses and other network connections with Network protection"
+        Fix="Set-MpPreference -EnableNetworkProtection Enabled"
     }
 
 
@@ -428,6 +443,7 @@ Function Invoke-CheckDefenderRecommendations {
             Result=$Result
             Config=$ASRState
             Description=$ASRName
+            Fix="Add-MpPreference -AttackSurfaceReductionRules_Ids <<ASRGUID>> -AttackSurfaceReductionRules_Actions Enabled"
         }
     }
 
@@ -497,6 +513,7 @@ function Invoke-GenerateReport {
                 <th scope='col'>Current Value</th>
                 <th scope='col'>Follows Recommendation?</th>
                 <th scope='col'>Description</th>
+                <th scope='col'></th>
             </tr></thead>
             <tbody>
         "
@@ -508,6 +525,7 @@ function Invoke-GenerateReport {
                 <td>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
                 <td>$($Result.Description)</td>
+                <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='$($Result.Fix)'>How to Fix</button>"};$output += "</td>
             </tr>"
         }
 
@@ -549,6 +567,10 @@ function Invoke-GenerateReport {
     $output += "
         <div class='card m-3 card-body text-center border-light text-body-secondary'>
             <p><a href='https://aka.ms/DefenderEval' class='link-secondary'>Version: $ModuleInfo</a></p>
+            <script>
+            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle=`"popover`"]')
+            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+            </script>
         </div>
     </body>
     </html>
