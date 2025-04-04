@@ -483,6 +483,7 @@ function Invoke-GenerateReport {
                 <th scope='col'>Current Value</th>
                 <th scope='col'>Follows Recommendation?</th>
                 <th scope='col'>Description</th>
+                <th scope='col'></th>
             </tr></thead>
             <tbody>
         "
@@ -494,6 +495,7 @@ function Invoke-GenerateReport {
                 <td>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
                 <td>$($Result.Description)</td>
+                <td><button type='button' class='btn btn-secondary float-end' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='Set-MpPreference XYZ'>How to Fix</button></td>
             </tr>"
         }
 
@@ -535,6 +537,10 @@ function Invoke-GenerateReport {
     $output += "
         <div class='card m-3 card-body text-center border-light text-body-secondary'>
             <p><a href='https://aka.ms/DefenderEval' class='link-secondary'>Version: $ModuleInfo</a></p>
+            <script>
+            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle=`"popover`"]')
+            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+            </script>
         </div>
     </body>
     </html>
