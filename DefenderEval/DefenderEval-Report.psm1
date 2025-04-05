@@ -332,6 +332,38 @@ Function Invoke-CheckDefenderRecommendations {
         Fix="Set-MpPreference -DisableEmailScanning 0"
     }
 
+    # Protection updates - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#manage-product-and-protection-updates
+
+    switch ($MpPref.CheckForSignaturesBeforeRunningScan) {
+        $true {$SignatureUpdate = "Enabled"}
+        default {$SignatureUpdate = "Disabled"}
+    }
+    if ($SignatureUpdate -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic="Scan settings"
+        Check="CheckForSignaturesBeforeRunningScan"
+        Result=$Result
+        Config=$SignatureUpdate
+        Description= "Check to update signatures before running a scheduled scan"
+        Fix="Set-MpPreference -CheckForSignaturesBeforeRunningScan 1"
+    }
+
+    switch ($MpPref.UILockdown) {
+        1 {$UILockdown = "Disabled"}
+        default {$UILockdown = "Enabled"}
+    }
+    if ($UILockdown -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic="Scan settings"
+        Check="UILockdown"
+        Result=$Result
+        Config=$UILockdown
+        Description= "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
+        Fix="Set-MpPreference -UILockdown 0"
+    }
+
 
     # Exploit protection - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#advanced-threat-and-exploit-mitigation-and-prevention-controlled-folder-access
 
