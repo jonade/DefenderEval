@@ -82,6 +82,7 @@ Function Invoke-CheckDefenderRecommendations {
     $Results = @()
     $MpPref = Get-MpPreference
     $MpComputerStatus = Get-MpComputerStatus
+    $ComputerInfo = Get-ComputerInfo
 
 
     # Evaluate Settings
@@ -362,6 +363,71 @@ Function Invoke-CheckDefenderRecommendations {
         Config=$UILockdown
         Description= "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
         Fix="Set-MpPreference -UILockdown 0"
+    }
+
+
+    # Windows Server specific settings
+
+    If ($ComputerInfo.WindowsInstallationType -eq "Server") {
+        switch ($MpPref.AllowNetworkProtectionOnWinServer) {
+            $true {$NPServer = "Enabled"}
+            default {$NPServer = "Disabled"}
+        }
+        if ($NPServer -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+        $Results += New-Object -TypeName psobject -Property @{
+            Topic="Windows Server settings"
+            Check="AllowNetworkProtectionOnWinServer"
+            Result=$Result
+            Config=$NPServer
+            Description= "Enable Network Protection on Windows Server"
+            Fix="Set-MpPreference -AllowNetworkProtectionOnWinServer 1"
+        }
+
+        switch ($MpPref.AllowNetworkProtectionDownLevel) {
+            $true {$NPDownlevel = "Enabled"}
+            default {$NPDownlevel = "Disabled"}
+        }
+        if ($NPDownlevel -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+        $Results += New-Object -TypeName psobject -Property @{
+            Topic="Windows Server settings"
+            Check="AllowNetworkProtectionDownLevel"
+            Result=$Result
+            Config=$NPDownlevel
+            Description= "Enable Network Protection on downlevel Windows Server"
+            Fix="Set-MpPreference -AllowNetworkProtectionDownLevel 1"
+        }
+
+        switch ($MpPref.AllowDatagramProcessingOnWinServer) {
+            $true {$NPDatagram = "Enabled"}
+            default {$NPDatagram = "Disabled"}
+        }
+        if ($NPDatagram -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+        $Results += New-Object -TypeName psobject -Property @{
+            Topic="Windows Server settings"
+            Check="AllowDatagramProcessingOnWinServer"
+            Result=$Result
+            Config=$NPDatagram
+            Description= "Enable Datagram procesing on Windows Server"
+            Fix="Set-MpPreference -AllowDatagramProcessingOnWinServer 1"
+        }
+
+        switch ($MpPref.DisableAutoExclusions) {
+            $true {$AutoExclude = "Disabled"}
+            default {$AutoExclude = "Enabled"}
+        }
+        if ($AutoExclude -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+        $Results += New-Object -TypeName psobject -Property @{
+            Topic="Windows Server settings"
+            Check="AutoExclusions"
+            Result=$Result
+            Config=$AutoExclude
+            Description= "Disable automatic exclusions on Windows Server"
+            Fix="Set-MpPreference -DisableAutoExclusions 1"
+        }
     }
 
 
