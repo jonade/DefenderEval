@@ -350,7 +350,7 @@ Function Invoke-CheckDefenderRecommendations {
     }
 
     switch ($MpPref.UILockdown) {
-        1 {$UILockdown = "Disabled"}
+        $true {$UILockdown = "Disabled"}
         default {$UILockdown = "Enabled"}
     }
     if ($UILockdown -eq "Enabled") {$Result="Yes"} else {$Result="No"}
