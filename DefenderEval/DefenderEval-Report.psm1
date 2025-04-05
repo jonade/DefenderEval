@@ -94,11 +94,11 @@ Function Invoke-CheckDefenderRecommendations {
     if ($Tamper -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Global"
-        Check="IsTamperProtected"
-        Result=$Result
-        Config=$Tamper
-        Description= "Prevents certain security settings, such as virus and threat protection, from being disabled or changed"
+        Topic = "Global"
+        Check = "IsTamperProtected"
+        Result = $Result
+        Config = $Tamper
+        Description = "Prevents certain security settings, such as virus and threat protection, from being disabled or changed"
     }
 
 
@@ -121,12 +121,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($MAPSReporting -eq "Advanced") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Cloud Protection"
-        Check="MAPSReporting"
-        Result=$Result
-        Config=$MAPSReporting
-        Description= "Enable the Microsoft Defender Cloud for near-instant protection and increased protection"
-        Fix="Set-MpPreference -MAPSReporting Advanced"
+        Topic = "Cloud Protection"
+        Check = "MAPSReporting"
+        Result = $Result
+        Config = $MAPSReporting
+        Description = "Enable the Microsoft Defender Cloud for near-instant protection and increased protection"
+        Fix = "Set-MpPreference -MAPSReporting Advanced"
     }
 
 
@@ -140,12 +140,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($SubmitType -eq "AllSamples") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Cloud Protection"
-        Check="SubmitSamplesConsent"
-        Result=$Result
-        Config=$SubmitType
-        Description= "Automatically submit samples to increase group protection"
-        Fix="Set-MpPreference -SubmitSamplesConsent Always"
+        Topic = "Cloud Protection"
+        Check = "SubmitSamplesConsent"
+        Result = $Result
+        Config = $SubmitType
+        Description = "Automatically submit samples to increase group protection"
+        Fix = "Set-MpPreference -SubmitSamplesConsent Always"
     }
 
 
@@ -156,12 +156,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($BAFS -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Cloud Protection"
-        Check="BlockAtFirstSeen"
-        Result=$Result
-        Config=$BAFS
-        Description= "Always Use the cloud to block new malware within seconds"
-        Fix="Set-MpPreference -DisableBlockAtFirstSeen 0"
+        Topic = "Cloud Protection"
+        Check = "BlockAtFirstSeen"
+        Result = $Result
+        Config = $BAFS
+        Description = "Always Use the cloud to block new malware within seconds"
+        Fix = "Set-MpPreference -DisableBlockAtFirstSeen 0"
     }
 
 
@@ -172,12 +172,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($IOAV -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Cloud Protection"
-        Check="IOAVProtection"
-        Result=$Result
-        Config=$IOAV
-        Description= "Scan all downloaded files and attachments"
-        Fix="Set-MpPreference -DisableIOAVProtection 0"
+        Topic = "Cloud Protection"
+        Check = "IOAVProtection"
+        Result = $Result
+        Config = $IOAV
+        Description = "Scan all downloaded files and attachments"
+        Fix = "Set-MpPreference -DisableIOAVProtection 0"
     }
 
 
@@ -194,24 +194,24 @@ Function Invoke-CheckDefenderRecommendations {
     } else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Cloud Protection"
-        Check="CloudBlockLevel"
-        Result=$Result
-        Config=$CloudBlockLevel
-        Description= "Set cloud block level to at least 'High'"
-        Fix="Set-MpPreference -CloudBlockLevel High"
+        Topic = "Cloud Protection"
+        Check = "CloudBlockLevel"
+        Result = $Result
+        Config = $CloudBlockLevel
+        Description = "Set cloud block level to at least 'High'"
+        Fix = "Set-MpPreference -CloudBlockLevel High"
     }
 
 
     if ($MpPref.CloudExtendedTimeout -ge 50) {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Cloud Protection"
-        Check="CloudExtendedTimeout"
-        Result=$Result
-        Config=$MpPref.CloudExtendedTimeout
-        Description= "Set cloud block time-out to 1 minute"
-        Fix="Set-MpPreference -CloudExtendedTimeout 50"
+        Topic = "Cloud Protection"
+        Check = "CloudExtendedTimeout"
+        Result = $Result
+        Config = $MpPref.CloudExtendedTimeout
+        Description = "Set cloud block time-out to 1 minute"
+        Fix = "Set-MpPreference -CloudExtendedTimeout 50"
     }
 
 
@@ -223,12 +223,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($RTPMonitoring -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Real-time Scanning"
-        Check="RealtimeMonitoring"
-        Result=$Result
-        Config=$RTPMonitoring
-        Description= "Constantly monitor files and processes for known malware modifications"
-        Fix="Set-MpPreference -DisableRealtimeMonitoring 0"
+        Topic = "Real-time Scanning"
+        Check = "RealtimeMonitoring"
+        Result = $Result
+        Config = $RTPMonitoring
+        Description = "Constantly monitor files and processes for known malware modifications"
+        Fix = "Set-MpPreference -DisableRealtimeMonitoring 0"
     }
 
 
@@ -239,12 +239,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($BehaviorMonitoring -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Real-time Scanning"
-        Check="BehaviorMonitoring"
-        Result=$Result
-        Config=$BehaviorMonitoring
-        Description= "Constantly monitor for known malware behaviors - even in 'clean' files and running programs"
-        Fix="Set-MpPreference -DisableBehaviorMonitoring 0"
+        Topic = "Real-time Scanning"
+        Check = "BehaviorMonitoring"
+        Result = $Result
+        Config = $BehaviorMonitoring
+        Description = "Constantly monitor for known malware behaviors - even in 'clean' files and running programs"
+        Fix = "Set-MpPreference -DisableBehaviorMonitoring 0"
     }
 
 
@@ -255,12 +255,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($ScriptScanning -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Real-time Scanning"
-        Check="ScriptScanning"
-        Result=$Result
-        Config=$ScriptScanning
-        Description= "Scan scripts as soon as they're seen or run"
-        Fix="Set-MpPreference -DisableScriptScanning 0"
+        Topic = "Real-time Scanning"
+        Check = "ScriptScanning"
+        Result = $Result
+        Config = $ScriptScanning
+        Description = "Scan scripts as soon as they're seen or run"
+        Fix = "Set-MpPreference -DisableScriptScanning 0"
     }
 
 
@@ -271,12 +271,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($RemovableDriveScanning -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Real-time Scanning"
-        Check="RemovableDriveScanning"
-        Result=$Result
-        Config=$RemovableDriveScanning
-        Description= "Scan removable drives as soon as they're inserted or mounted"
-        Fix="Set-MpPreference -DisableRemovableDriveScanning 0"
+        Topic = "Real-time Scanning"
+        Check = "RemovableDriveScanning"
+        Result = $Result
+        Config = $RemovableDriveScanning
+        Description = "Scan removable drives as soon as they're inserted or mounted"
+        Fix = "Set-MpPreference -DisableRemovableDriveScanning 0"
     }
 
 
@@ -290,12 +290,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($PUA -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Potentially Unwanted Application protection"
-        Check="PUAProtection"
-        Result=$Result
-        Config=$PUA
-        Description= "Prevent grayware, adware, and other potentially unwanted apps from installing"
-        Fix="Set-MpPreference -PUAProtection Enabled"
+        Topic = "Potentially Unwanted Application protection"
+        Check = "PUAProtection"
+        Result = $Result
+        Config = $PUA
+        Description = "Prevent grayware, adware, and other potentially unwanted apps from installing"
+        Fix = "Set-MpPreference -PUAProtection Enabled"
     }
 
 
@@ -308,12 +308,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($ArchiveScan -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Email and archive scanning"
-        Check="ArchiveScanning"
-        Result=$Result
-        Config=$ArchiveScan
-        Description= "Scan files contained within archives"
-        Fix="Set-MpPreference -DisableArchiveScanning 0"
+        Topic = "Email and archive scanning"
+        Check = "ArchiveScanning"
+        Result = $Result
+        Config = $ArchiveScan
+        Description = "Scan files contained within archives"
+        Fix = "Set-MpPreference -DisableArchiveScanning 0"
     }
 
 
@@ -324,12 +324,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($EmailScan -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Email and archive scanning"
-        Check="EmailScanning"
-        Result=$Result
-        Config=$EmailScan
-        Description= "Scan email stored within files (e.g. .PST)"
-        Fix="Set-MpPreference -DisableEmailScanning 0"
+        Topic = "Email and archive scanning"
+        Check = "EmailScanning"
+        Result = $Result
+        Config = $EmailScan
+        Description = "Scan email stored within files (e.g. .PST)"
+        Fix = "Set-MpPreference -DisableEmailScanning 0"
     }
 
     # Protection updates - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#manage-product-and-protection-updates
@@ -341,12 +341,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($SignatureUpdate -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Scan settings"
-        Check="CheckForSignaturesBeforeRunningScan"
-        Result=$Result
-        Config=$SignatureUpdate
-        Description= "Check to update signatures before running a scheduled scan"
-        Fix="Set-MpPreference -CheckForSignaturesBeforeRunningScan 1"
+        Topic = "Scan settings"
+        Check = "CheckForSignaturesBeforeRunningScan"
+        Result = $Result
+        Config = $SignatureUpdate
+        Description = "Check to update signatures before running a scheduled scan"
+        Fix = "Set-MpPreference -CheckForSignaturesBeforeRunningScan 1"
     }
 
     switch ($MpPref.UILockdown) {
@@ -356,12 +356,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($UILockdown -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Scan settings"
-        Check="UILockdown"
-        Result=$Result
-        Config=$UILockdown
-        Description= "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
-        Fix="Set-MpPreference -UILockdown 0"
+        Topic = "Scan settings"
+        Check = " UILockdown"
+        Result = $Result
+        Config = $UILockdown
+        Description = "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
+        Fix = "Set-MpPreference -UILockdown 0"
     }
 
 
@@ -377,12 +377,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($CFA -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Exploit protection"
-        Check="EnableControlledFolderAccess"
-        Result=$Result
-        Config=$CFA
-        Description= "Prevent malicious and suspicious apps (such as ransomware) from making changes to protected folders with Controlled folder access"
-        Fix="Set-MpPreference -EnableControlledFolderAccess Enabled"
+        Topic = "Exploit protection"
+        Check = "EnableControlledFolderAccess"
+        Result = $Result
+        Config = $CFA
+        Description = "Prevent malicious and suspicious apps (such as ransomware) from making changes to protected folders with Controlled folder access"
+        Fix = "Set-MpPreference -EnableControlledFolderAccess Enabled"
     }
 
 
@@ -394,12 +394,12 @@ Function Invoke-CheckDefenderRecommendations {
     if ($NetworkProtection -eq "Enabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
-        Topic="Exploit protection"
-        Check="EnableNetworkProtection"
-        Result=$Result
-        Config=$NetworkProtection
-        Description= "Block connections to known bad IP addresses and other network connections with Network protection"
-        Fix="Set-MpPreference -EnableNetworkProtection Enabled"
+        Topic = "Exploit protection"
+        Check = "EnableNetworkProtection"
+        Result = $Result
+        Config = $NetworkProtection
+        Description = "Block connections to known bad IP addresses and other network connections with Network protection"
+        Fix = "Set-MpPreference -EnableNetworkProtection Enabled"
     }
 
 
@@ -458,25 +458,25 @@ Function Invoke-CheckDefenderRecommendations {
         $ASRName = $ASRDefinitions[$ASR.ID]
 
         $Results += New-Object -TypeName psobject -Property @{
-            Topic="Exploit protection"
-            Check="ASR Rule ($($ASR.ID))"
-            ASR=$ASR.ID
-            Result=$Result
-            Config=$ASRState
-            Description=$ASRName
-            Fix="Add-MpPreference -AttackSurfaceReductionRules_Ids <<ASRGUID>> -AttackSurfaceReductionRules_Actions Enabled"
+            Topic = "Exploit protection"
+            Check = "ASR Rule ($($ASR.ID))"
+            ASR = $ASR.ID
+            Result = $Result
+            Config = $ASRState
+            Description = $ASRName
+            Fix = "Add-MpPreference -AttackSurfaceReductionRules_Ids <<ASRGUID>> -AttackSurfaceReductionRules_Actions Enabled"
         }
     }
 
-    # Ensure that rows are added to the results if any defined ASR rules are missing
+    # Ensure that rows are added to the results even if any defined ASR rules are missing
     foreach ($ASRDefinition in $($ASRDefinitions.GetEnumerator())) {
         if ($Results.ASR -notcontains $($ASRDefinition.Name)) {
             $Results += New-Object -TypeName psobject -Property @{
-                Topic="Exploit protection"
-                Check="ASR Rule ($($ASRDefinition.Name))"
-                Result="No"
-                Config="Missing"
-                Description=$($ASRDefinition.Value)
+                Topic = "Exploit protection"
+                Check = "ASR Rule ($($ASRDefinition.Name))"
+                Result = "No"
+                Config = "Missing"
+                Description = $($ASRDefinition.Value)
             }
         }
     }
