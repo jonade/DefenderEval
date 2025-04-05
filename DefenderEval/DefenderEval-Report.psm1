@@ -380,7 +380,7 @@ Function Invoke-CheckDefenderRecommendations {
             Check="AllowNetworkProtectionOnWinServer"
             Result=$Result
             Config=$NPServer
-            Description= "Enable Network Protection on Windows Server"
+            Description="Enable Network Protection on Windows Server"
             Fix="Set-MpPreference -AllowNetworkProtectionOnWinServer 1"
         }
 
@@ -395,7 +395,7 @@ Function Invoke-CheckDefenderRecommendations {
             Check="AllowNetworkProtectionDownLevel"
             Result=$Result
             Config=$NPDownlevel
-            Description= "Enable Network Protection on downlevel Windows Server"
+            Description="Enable Network Protection on downlevel Windows Server"
             Fix="Set-MpPreference -AllowNetworkProtectionDownLevel 1"
         }
 
@@ -410,7 +410,7 @@ Function Invoke-CheckDefenderRecommendations {
             Check="AllowDatagramProcessingOnWinServer"
             Result=$Result
             Config=$NPDatagram
-            Description= "Enable Datagram procesing on Windows Server"
+            Description="Enable Datagram procesing on Windows Server"
             Fix="Set-MpPreference -AllowDatagramProcessingOnWinServer 1"
         }
 
@@ -425,7 +425,7 @@ Function Invoke-CheckDefenderRecommendations {
             Check="AutoExclusions"
             Result=$Result
             Config=$AutoExclude
-            Description= "Disable automatic exclusions on Windows Server"
+            Description="Disable automatic exclusions on Windows Server"
             Fix="Set-MpPreference -DisableAutoExclusions 1"
         }
     }
