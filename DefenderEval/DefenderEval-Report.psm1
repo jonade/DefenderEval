@@ -464,7 +464,7 @@ Function Invoke-CheckDefenderRecommendations {
             Result = $Result
             Config = $ASRState
             Description = $ASRName
-            Fix = "Add-MpPreference -AttackSurfaceReductionRules_Ids <<ASRGUID>> -AttackSurfaceReductionRules_Actions Enabled"
+            Fix = "Add-MpPreference -AttackSurfaceReductionRules_Ids $($ASR.ID) -AttackSurfaceReductionRules_Actions Enabled"
         }
     }
 
