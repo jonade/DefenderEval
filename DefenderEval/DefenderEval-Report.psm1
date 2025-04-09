@@ -68,6 +68,12 @@ Function Invoke-ModuleVersionCheck {
 }
 
 Function Invoke-CheckDefenderRecommendations {
+    Write-Warning "The command to run the report has been updated to 'Get-DefenderEvaluationReport'. Please run that command instead next time."
+
+    Get-DefenderEvaluationReport
+}
+
+Function Get-DefenderEvaluationReport {
     param (
 
     )

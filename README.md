@@ -10,4 +10,4 @@ Install the module by running
 
 After installation then run the following as an Administrator
 
-`Invoke-CheckDefenderRecommendations`
+`Get-DefenderEvaluationReport`
