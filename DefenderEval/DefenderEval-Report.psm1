@@ -160,7 +160,7 @@ Function Invoke-CheckDefenderRecommendations {
         Check = "BlockAtFirstSeen"
         Result = $Result
         Config = $BAFS
-        Description = "Always Use the cloud to block new malware within seconds"
+        Description = "Always use the cloud to block new malware within seconds"
         Fix = "Set-MpPreference -DisableBlockAtFirstSeen 0"
     }
 
