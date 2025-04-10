@@ -56,8 +56,8 @@ Function Invoke-ModuleVersionCheck {
         If($Modules.Count -gt 1) {
             ForEach($Module in $Modules) {
                 If($Module.Version -ne $Latest.Version) {
-                    # Not the latest version, remove it.
-                    Write-Host "$(Get-Date) Uninstalling $($Module.Name) Version $($Module.Version)"
+                    # Remove any out of date versions of the module
+                    Write-Host "$(Get-Date) Uninstalling $($Module.Name) (Version $($Module.Version))"
                     Try {
                         Uninstall-Module $Module.Name -RequiredVersion $($Module.Version) -ErrorAction:Stop
                     } Catch {}
@@ -68,7 +68,7 @@ Function Invoke-ModuleVersionCheck {
 }
 
 Function Invoke-CheckDefenderRecommendations {
-    Write-Warning "The command to run the report has been updated to 'Get-DefenderEvaluationReport'. Please run that command instead next time."
+    Write-Warning "The command to run the report has been changed to 'Get-DefenderEvaluationReport'. Please run that command instead next time."
 
     Get-DefenderEvaluationReport
 }
@@ -82,7 +82,7 @@ Function Get-DefenderEvaluationReport {
     Invoke-ModuleVersionCheck
     
     if ((Get-RunningElevated) -eq $false) {
-        throw "PowerShell must be run as an administrator to be able to collect data from the machine."
+        throw "PowerShell must be run elevated as an administrator to be able to collect data from the machine."
     }
 
     $Results = @()
@@ -475,7 +475,7 @@ Function Get-DefenderEvaluationReport {
     }
 
 
-    # Definitions to provide a friendly name in the report
+    # Define the GUIDs and the names for the attack surface reduction rules for use in the report
     # https://learn.microsoft.com/en-us/defender-endpoint/attack-surface-reduction-rules-reference
     $ASRDefinitions = @{
         "56a863a9-875e-4185-98a7-b882c64b5ce5" = "Block abuse of exploited vulnerable signed drivers";
@@ -506,7 +506,7 @@ Function Get-DefenderEvaluationReport {
     $MappedASR = @()
     $i = 0
 
-    # Map both the ASR ID and Action together within the same object
+    # Map both the ASR ID and Action together within the same object to make looping through them easier
     foreach ($ASRId in $ASRIds) {
         $MappedASR += New-Object -TypeName psobject -Property @{
             ID=$ASRId
@@ -594,7 +594,7 @@ function Invoke-GenerateReport {
     "
 
     
-    # Loop each Topic
+    # Create a new table for each category within the results
     foreach ($Topic in ($Results | Group-Object Topic)){
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
@@ -611,7 +611,7 @@ function Invoke-GenerateReport {
             <tbody>
         "
 
-        # Loop each Result
+        # Add a new row for each result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
             $output += "<tr><th scope='row'></th>
                 <td>$($Result.Check)</td>
@@ -625,7 +625,7 @@ function Invoke-GenerateReport {
         $output += "</tbody></table></div></div>"
     }
 
-    # Add details of Exclusions configured
+    # Add details of Exclusions which have been configured
     foreach ($Ex in $Exclusions.keys){
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
@@ -641,7 +641,7 @@ function Invoke-GenerateReport {
         if ($($Exclusions.$Ex).Count -eq 0) {
             # Add a single row indicating there are no exclusions configured
             $newRow = ($Row -replace ("<ReplaceMe>","None"))
-            $newRow = ($newRow -replace ("<td ","<td class='table-success'"))
+            $newRow = ($newRow -replace ("<td ","<td class='table-success'")) # Update the formatting if there are no exclusions
             $output += $newRow
         } else {
             # Add a row for each configured exclusion
@@ -656,7 +656,7 @@ function Invoke-GenerateReport {
     }
 
 
-    # End of the report
+    # Add a Footer to the end of the report
     $output += "
         <div class='card m-3 card-body text-center border-light text-body-secondary'>
             <p><a href='https://aka.ms/DefenderEval' class='link-secondary'>Version: $ModuleInfo</a></p>
