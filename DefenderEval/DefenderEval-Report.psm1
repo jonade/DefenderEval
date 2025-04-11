@@ -141,7 +141,7 @@ Function Get-DefenderEvaluationReport {
 
 
     switch ($MpPref.DisableBlockAtFirstSeen) {
-        1 {$BAFS = "Disabled"}
+        $true {$BAFS = "Disabled"}
         default {$BAFS = "Enabled"}
     }
     if ($BAFS -eq "Enabled") {$Result="Yes"} else {$Result="No"}
@@ -157,7 +157,7 @@ Function Get-DefenderEvaluationReport {
 
 
     switch ($MpPref.DisableIOAVProtection) {
-        1 {$IOAV = "Disabled"}
+        $true {$IOAV = "Disabled"}
         default {$IOAV = "Enabled"}
     }
     if ($IOAV -eq "Enabled") {$Result="Yes"} else {$Result="No"}
@@ -208,7 +208,7 @@ Function Get-DefenderEvaluationReport {
 
     # Real-time Scanning - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#always-on-protection-real-time-scanning
     switch ($MpPref.DisableRealtimeMonitoring) {
-        1 {$RTPMonitoring = "Disabled"}
+        $true {$RTPMonitoring = "Disabled"}
         default {$RTPMonitoring = "Enabled"}
     }
     if ($RTPMonitoring -eq "Enabled") {$Result="Yes"} else {$Result="No"}
@@ -224,7 +224,7 @@ Function Get-DefenderEvaluationReport {
 
 
     switch ($MpPref.DisableBehaviorMonitoring) {
-        1 {$BehaviorMonitoring = "Disabled"}
+        $true {$BehaviorMonitoring = "Disabled"}
         default {$BehaviorMonitoring = "Enabled"}
     }
     if ($BehaviorMonitoring -eq "Enabled") {$Result="Yes"} else {$Result="No"}
@@ -240,7 +240,7 @@ Function Get-DefenderEvaluationReport {
 
 
     switch ($MpPref.DisableScriptScanning) {
-        1 {$ScriptScanning = "Disabled"}
+        $true {$ScriptScanning = "Disabled"}
         default {$ScriptScanning = "Enabled"}
     }
     if ($ScriptScanning -eq "Enabled") {$Result="Yes"} else {$Result="No"}
@@ -256,7 +256,7 @@ Function Get-DefenderEvaluationReport {
 
 
     switch ($MpPref.DisableRemovableDriveScanning) {
-        1 {$RemovableDriveScanning = "Disabled"}
+        $true {$RemovableDriveScanning = "Disabled"}
         default {$RemovableDriveScanning = "Enabled"}
     }
     if ($RemovableDriveScanning -eq "Enabled") {$Result="Yes"} else {$Result="No"}
@@ -293,7 +293,7 @@ Function Get-DefenderEvaluationReport {
     # Email and archive scanning - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#email-and-archive-scanning
 
     switch ($MpPref.DisableArchiveScanning) {
-        1 {$ArchiveScan = "Disabled"}
+        $true {$ArchiveScan = "Disabled"}
         default {$ArchiveScan = "Enabled"}
     }
     if ($ArchiveScan -eq "Enabled") {$Result="Yes"} else {$Result="No"}
@@ -309,7 +309,7 @@ Function Get-DefenderEvaluationReport {
 
 
     switch ($MpPref.DisableEmailScanning) {
-        0 {$EmailScan = "Disabled"}
+        $false {$EmailScan = "Enabled"}
         default {$EmailScan = "Disabled"}
     }
     if ($EmailScan -eq "Enabled") {$Result="Yes"} else {$Result="No"}
