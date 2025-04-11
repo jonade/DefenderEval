@@ -420,6 +420,200 @@ Function Get-DefenderEvaluationReport {
         }
     }
 
+    # Network protection
+
+    switch ($MpPref.EnableNetworkProtection) {
+        0 {$NetworkProtection = "Disabled"}
+        1 {$NetworkProtection = "Enabled"}
+        2 {$NetworkProtection = "Audit"}
+    }
+    if ($NetworkProtection -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "EnableNetworkProtection"
+        Result = $Result
+        Config = $NetworkProtection
+        Description = "Block connections to known bad IP addresses and other network connections with Network protection"
+        Fix = "Set-MpPreference -EnableNetworkProtection Enabled"
+    }
+
+
+    switch ($MpPref.DisableDatagramProcessing) {
+        $true {$DatagramParse = "Disabled"}
+        default {$DatagramParse = "Enabled"}
+    }
+    if ($DatagramParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "DatagramProcessing"
+        Result = $Result
+        Config = $DatagramParse
+        Description = "Inspection of UDP connections"
+        Fix = "Set-MpPreference -DisableDatagramProcessing `$false"
+    }
+
+
+    switch ($MpPref.DisableDnsParsing) {
+        $true {$DNSParse = "Disabled"}
+        default {$DNSParse = "Enabled"}
+    }
+    if ($DNSParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "DnsParsing"
+        Result = $Result
+        Config = $DNSParse
+        Description = "Inspection of DNS traffic that occurs over a UDP channel"
+        Fix = "Set-MpPreference -DisableDnsParsing `$false"
+    }
+
+
+    switch ($MpPref.DisableDnsOverTcpParsing) {
+        $true {$TCPDNS = "Disabled"}
+        default {$TCPDNS = "Enabled"}
+    }
+    if ($TCPDNS -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "DnsOverTcpParsing"
+        Result = $Result
+        Config = $TCPDNS
+        Description = "Inspection of DNS traffic that occurs over a TCP channel"
+        Fix = "Set-MpPreference -DisableDnsOverTcpParsing `$false"
+    }
+
+
+    switch ($MpPref.DisableFtpParsing) {
+        $true {$FTPParse = "Disabled"}
+        default {$FTPParse = "Enabled"}
+    }
+    if ($FTPParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "FtpParsing"
+        Result = $Result
+        Config = $FTPParse
+        Description = "Inspection of FTP traffic"
+        Fix = "Set-MpPreference -DisableFtpParsing `$false"
+    }
+
+
+    switch ($MpPref.DisableHttpParsing) {
+        $true {$HTTPParse = "Disabled"}
+        default {$HTTPParse = "Enabled"}
+    }
+    if ($HTTPParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "HttpParsing"
+        Result = $Result
+        Config = $HTTPParse
+        Description = "Inspection of HTTP traffic"
+        Fix = "Set-MpPreference -DisableHttpParsing `$false"
+    }
+
+
+    switch ($MpPref.DisableInboundConnectionFiltering) {
+        $true{$InboundFilter = "Disabled"}
+        default {$InboundFilter = "Enabled"}
+    }
+    if ($InboundFilter -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "InboundConnectionFiltering"
+        Result = $Result
+        Config = $InboundFilter
+        Description = "Specifies whether to inspect only outbound connections. By default, Network Protection inspects both inbound and outbound connections"
+        Fix = "Set-MpPreference -DisableInboundConnectionFiltering `$false"
+    }
+
+
+    switch ($MpPref.DisableRdpParsing) {
+        $true {$RDPParse = "Disabled"}
+        default {$RDPParse = "Enabled"}
+    }
+    if ($RDPParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "RdpParsing"
+        Result = $Result
+        Config = $RDPParse
+        Description = "Inspect RDP traffic to look for malicious attacks using the RDP protocol"
+        Fix = "Set-MpPreference -DisableRdpParsing `$false"
+    }
+
+
+    switch ($MpPref.DisableSmtpParsing) {
+        $true {$SMTPParse = "Disabled"}
+        default {$SMTPParse = "Enabled"}
+    }
+    if ($SMTPParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "SmtpParsing"
+        Result = $Result
+        Config = $SMTPParse
+        Description = "Inspection of SMTP traffic"
+        Fix = "Set-MpPreference -DisableSmtpParsing `$false"
+    }
+
+
+    switch ($MpPref.DisableTlsParsing) {
+        $true {$TLSParse = "Disabled"}
+        default {$TLSParse = "Enabled"}
+    }
+    if ($TLSParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "TlsParsing"
+        Result = $Result
+        Config = $TLSParse
+        Description = "Inspect of TLS traffic to see if a connection is being made to a malicious website, and provide metadata to behavior monitoring"
+        Fix = "Set-MpPreference -DisableTlsParsing `$false"
+    }
+
+
+    switch ($MpPref.EnableDnsSinkhole) {
+        $true {$DnsSinkhole = "Enabled"}
+        default {$DnsSinkhole = "Disabled"}
+    }
+    if ($DnsSinkhole -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "DnsSinkhole"
+        Result = $Result
+        Config = $DnsSinkhole
+        Description = "Inspect DNS traffic to detect and sinkhole DNS exfiltration attempts and other DNS based malicious attacks"
+        Fix = "Set-MpPreference -EnableDnsSinkhole `$true"
+    }
+
+
+    switch ($MpPref.DisableSshParsing) {
+        $true {$SSHParse = "Disabled"}
+        default {$SSHParse = "Enabled"}
+    }
+    if ($SSHParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "DisableSshParsing"
+        Result = $Result
+        Config = $SSHParse
+        Description = "Inspection of SSH traffic"
+        Fix = "Set-MpPreference -DisableSshParsing `$false"
+    }
+
 
     # Exploit protection - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#advanced-threat-and-exploit-mitigation-and-prevention-controlled-folder-access
 
@@ -439,23 +633,6 @@ Function Get-DefenderEvaluationReport {
         Config = $CFA
         Description = "Prevent malicious and suspicious apps (such as ransomware) from making changes to protected folders with Controlled folder access"
         Fix = "Set-MpPreference -EnableControlledFolderAccess Enabled"
-    }
-
-
-    switch ($MpPref.EnableNetworkProtection) {
-        0 {$NetworkProtection = "Disabled"}
-        1 {$NetworkProtection = "Enabled"}
-        2 {$NetworkProtection = "Audit"}
-    }
-    if ($NetworkProtection -eq "Enabled") {$Result="Yes"} else {$Result="No"}
-
-    $Results += New-Object -TypeName psobject -Property @{
-        Topic = "Exploit protection"
-        Check = "EnableNetworkProtection"
-        Result = $Result
-        Config = $NetworkProtection
-        Description = "Block connections to known bad IP addresses and other network connections with Network protection"
-        Fix = "Set-MpPreference -EnableNetworkProtection Enabled"
     }
 
 
