@@ -858,7 +858,7 @@ function Invoke-GenerateReport {
     # Add a Footer to the end of the report
     $output += "
         <div class='card m-3 card-body text-center border-light text-body-secondary'>
-            <p><a href='https://aka.ms/DefenderEval' class='link-secondary'>Version: $ModuleInfo</a></p>
+            <p>Version: $ModuleInfo | <a href='https://aka.ms/DefenderEval' class='link-secondary'>GitHub</a></p>
             <script>
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle=`"popover`"]')
             const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
