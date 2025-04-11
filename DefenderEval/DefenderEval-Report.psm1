@@ -711,6 +711,7 @@ Function Get-DefenderEvaluationReport {
                 Result = "No"
                 Config = "Missing"
                 Description = $($ASRDefinition.Value)
+                Fix = "Add-MpPreference -AttackSurfaceReductionRules_Ids $($ASRDefinition.Name) -AttackSurfaceReductionRules_Actions Enabled"
             }
         }
     }
