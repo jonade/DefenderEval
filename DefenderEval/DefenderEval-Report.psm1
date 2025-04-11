@@ -440,6 +440,22 @@ Function Get-DefenderEvaluationReport {
     }
 
 
+    switch ($MpPref.DisableInboundConnectionFiltering) {
+        $true{$InboundFilter = "Disabled"}
+        default {$InboundFilter = "Enabled"}
+    }
+    if ($InboundFilter -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "InboundConnectionFiltering"
+        Result = $Result
+        Config = $InboundFilter
+        Description = "Specifies whether to inspect only outbound connections. By default, Network Protection inspects both inbound and outbound connections"
+        Fix = "Set-MpPreference -DisableInboundConnectionFiltering `$false"
+    }
+
+
     switch ($MpPref.DisableDatagramProcessing) {
         $true {$DatagramParse = "Disabled"}
         default {$DatagramParse = "Enabled"}
@@ -488,6 +504,22 @@ Function Get-DefenderEvaluationReport {
     }
 
 
+    switch ($MpPref.EnableDnsSinkhole) {
+        $true {$DnsSinkhole = "Enabled"}
+        default {$DnsSinkhole = "Disabled"}
+    }
+    if ($DnsSinkhole -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "DnsSinkhole"
+        Result = $Result
+        Config = $DnsSinkhole
+        Description = "Inspect DNS traffic to detect and sinkhole DNS exfiltration attempts and other DNS based malicious attacks"
+        Fix = "Set-MpPreference -EnableDnsSinkhole `$true"
+    }
+
+
     switch ($MpPref.DisableFtpParsing) {
         $true {$FTPParse = "Disabled"}
         default {$FTPParse = "Enabled"}
@@ -517,22 +549,6 @@ Function Get-DefenderEvaluationReport {
         Config = $HTTPParse
         Description = "Inspection of HTTP traffic"
         Fix = "Set-MpPreference -DisableHttpParsing `$false"
-    }
-
-
-    switch ($MpPref.DisableInboundConnectionFiltering) {
-        $true{$InboundFilter = "Disabled"}
-        default {$InboundFilter = "Enabled"}
-    }
-    if ($InboundFilter -eq "Enabled") {$Result="Yes"} else {$Result="No"}
-
-    $Results += New-Object -TypeName psobject -Property @{
-        Topic = "Network protection"
-        Check = "InboundConnectionFiltering"
-        Result = $Result
-        Config = $InboundFilter
-        Description = "Specifies whether to inspect only outbound connections. By default, Network Protection inspects both inbound and outbound connections"
-        Fix = "Set-MpPreference -DisableInboundConnectionFiltering `$false"
     }
 
 
@@ -568,6 +584,22 @@ Function Get-DefenderEvaluationReport {
     }
 
 
+    switch ($MpPref.DisableSshParsing) {
+        $true {$SSHParse = "Disabled"}
+        default {$SSHParse = "Enabled"}
+    }
+    if ($SSHParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Network protection"
+        Check = "SshParsing"
+        Result = $Result
+        Config = $SSHParse
+        Description = "Inspection of SSH traffic"
+        Fix = "Set-MpPreference -DisableSshParsing `$false"
+    }
+
+
     switch ($MpPref.DisableTlsParsing) {
         $true {$TLSParse = "Disabled"}
         default {$TLSParse = "Enabled"}
@@ -581,38 +613,6 @@ Function Get-DefenderEvaluationReport {
         Config = $TLSParse
         Description = "Inspect of TLS traffic to see if a connection is being made to a malicious website, and provide metadata to behavior monitoring"
         Fix = "Set-MpPreference -DisableTlsParsing `$false"
-    }
-
-
-    switch ($MpPref.EnableDnsSinkhole) {
-        $true {$DnsSinkhole = "Enabled"}
-        default {$DnsSinkhole = "Disabled"}
-    }
-    if ($DnsSinkhole -eq "Enabled") {$Result="Yes"} else {$Result="No"}
-
-    $Results += New-Object -TypeName psobject -Property @{
-        Topic = "Network protection"
-        Check = "DnsSinkhole"
-        Result = $Result
-        Config = $DnsSinkhole
-        Description = "Inspect DNS traffic to detect and sinkhole DNS exfiltration attempts and other DNS based malicious attacks"
-        Fix = "Set-MpPreference -EnableDnsSinkhole `$true"
-    }
-
-
-    switch ($MpPref.DisableSshParsing) {
-        $true {$SSHParse = "Disabled"}
-        default {$SSHParse = "Enabled"}
-    }
-    if ($SSHParse -eq "Enabled") {$Result="Yes"} else {$Result="No"}
-
-    $Results += New-Object -TypeName psobject -Property @{
-        Topic = "Network protection"
-        Check = "DisableSshParsing"
-        Result = $Result
-        Config = $SSHParse
-        Description = "Inspection of SSH traffic"
-        Fix = "Set-MpPreference -DisableSshParsing `$false"
     }
 
 
