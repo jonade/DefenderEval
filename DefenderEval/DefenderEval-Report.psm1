@@ -92,22 +92,6 @@ Function Get-DefenderEvaluationReport {
 
 
     # Evaluate Settings
-    # Tamper Protection
-    switch ($MpComputerStatus.IsTamperProtected) {
-        $true {$Tamper = "Enabled"}
-        $false {$Tamper = "Disabled"}
-    }
-
-    if ($Tamper -eq "Enabled") {$Result="Yes"} else {$Result="No"}
-
-    $Results += New-Object -TypeName psobject -Property @{
-        Topic = "Global"
-        Check = "IsTamperProtected"
-        Result = $Result
-        Config = $Tamper
-        Description = "Prevents certain security settings, such as virus and threat protection, from being disabled or changed"
-    }
-
 
     # Collect details of configured Exclusions
     $Exclusions = @{
@@ -593,6 +577,43 @@ function Invoke-GenerateReport {
         <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js' integrity='sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy' crossorigin='anonymous'></script>
     "
 
+    # Add header cards to the beginning of the report before the main results
+
+    $output += "<div class='row justify-content-around'>" # Start of header cards
+
+
+    $output += "<div class='card text-bg-light text-center p-0' style='width: 18rem;'>
+        <div class='card-header h5 mb-0'>Computer ID</div>
+        <div class='card-body mb-0'>
+            <p class='card-text user-select-all'><small>$($MpPref.ComputerID)</small></p>
+        </div>
+    </div>"
+
+
+    $output += "<div class='card text-bg-light text-center p-0' style='width: 18rem;'>
+        <div class='card-header h5'>Operating System</div>
+            <div class='card-body'>
+            <p class='card-text'><strong>Name:</strong> $(($ComputerInfo.OsName).TrimStart('Microsoft '))</p>"
+            if ($($ComputerInfo.WindowsInstallationType) -eq "Client") {
+                $output += "<p class='card-text'><strong>Version:</strong> $($ComputerInfo.OSDisplayVersion)</p>"
+            }
+            $output += "
+            <p class='card-text'><strong>Type:</strong> $($ComputerInfo.WindowsInstallationType)</p>
+        </div>
+    </div>"
+
+
+    $output += "<div class='card text-center p-0";if($($MpComputerStatus.IsTamperProtected -eq $true)) {$output += " text-bg-success"} else {$output += " text-bg-danger"};$output+="' style='width: 18rem;'>
+        <div class='card-header'><h5>Tamper Protection</h5></div>
+            <div class='card-body'>
+            <p class='card-text mb-2 align-middle'><strong>Enabled:</strong> $($MpComputerStatus.IsTamperProtected)</p>
+            <p class='card-text align-middle'><strong>Source:</strong> $($MpComputerStatus.TamperProtectionSource)</p>
+        </div>
+    </div>"
+
+
+    $output += "</div>" # End of header cards
+
     
     # Create a new table for each category within the results
     foreach ($Topic in ($Results | Group-Object Topic)){
@@ -618,7 +639,7 @@ function Invoke-GenerateReport {
                 <td>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
                 <td>$($Result.Description)</td>
-                <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to Fix</button>"};$output += "</td>
+                <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"};$output += "</td>
             </tr>"
         }
 
@@ -626,7 +647,7 @@ function Invoke-GenerateReport {
     }
 
     # Add details of Exclusions which have been configured
-    foreach ($Ex in $Exclusions.keys){
+    foreach ($Ex in $Exclusions.Keys){
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Ex)</h5>
