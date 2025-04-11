@@ -37,13 +37,14 @@ Function Invoke-ModuleVersionCheck {
     # Determines if the module is up to date
     
     $GalleryVersion = Find-Module DefenderEval
-    $InstalledVersion = Get-Module DefenderEval
+    $InstalledVersion = Get-Module DefenderEval | Select-Object -First 1
 
     If($GalleryVersion.Version -gt $InstalledVersion.Version) {
         Write-Host "$(Get-Date) The loaded version of the DefenderEval module ($($InstalledVersion.Version)) is older than the latest version in the PSGallery ($($GalleryVersion.Version)). Attempting to upgrade to the latest version."
         
         Try {
             Update-Module DefenderEval -Force
+            Import-Module DefenderEval -RequiredVersion $GalleryVersion.Version -Force
         } Catch {
             Write-Error "Error while trying to upgrade the module. Try running Update-Module DefenderEval"
         }
