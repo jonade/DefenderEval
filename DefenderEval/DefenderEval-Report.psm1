@@ -845,7 +845,7 @@ function Invoke-GenerateReport {
         } else {
             # Add a row for each configured exclusion
             foreach ($obj in ($Exclusions.$Ex)) {
-                $output += ($Row -replace ("<ReplaceMe>",$Obj))
+                $output += ($Row -replace ("<ReplaceMe>","<small>$Obj</small>"))
             }
         }
 
