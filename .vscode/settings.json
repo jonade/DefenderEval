@@ -2,6 +2,9 @@
     "spellright.language": [
         "en-GB"
     ],
+    "spellright.groupDictionaries": false,
+    "spellright.notificationClass": "information",
+    "spellright.recheckOnSave": true,
     "spellright.documentTypes": [
         "markdown",
         "latex",
