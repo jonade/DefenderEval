@@ -763,15 +763,17 @@ function Invoke-GenerateReport {
 
     $output += "<div class='card text-bg-light text-center p-0' style='width: 18rem;'>
         <div class='card-header h5 mb-0'>Computer ID</div>
-        <div class='card-body mb-0'>
-            <p class='card-text user-select-all'><small>$($MpPref.ComputerID)</small></p>
+        <div class='card-body mb-0 small'>
+            <p class='card-text user-select-all'>$($MpPref.ComputerID)</p>
+            <p class='card-text'><strong>Platform:</strong> $($MpComputerStatus.AMProductVersion)</p>
+            <p class='card-text'><strong>Engine:</strong> $($MpComputerStatus.AMEngineVersion)</p>
         </div>
     </div>"
 
 
     $output += "<div class='card text-bg-light text-center p-0' style='width: 18rem;'>
         <div class='card-header h5'>Operating System</div>
-            <div class='card-body'>
+            <div class='card-body small'>
             <p class='card-text'><strong>Name:</strong> $(($ComputerInfo.OsName).TrimStart('Microsoft '))</p>"
             if ($($ComputerInfo.WindowsInstallationType) -eq "Client") {
                 $output += "<p class='card-text'><strong>Version:</strong> $($ComputerInfo.OSDisplayVersion)</p>"
