@@ -788,6 +788,12 @@ function Invoke-GenerateReport {
         </div>
         <script src='https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.8/dist/umd/popper.min.js' integrity='sha384-I7E8VVD/ismYTF4hNIPjVp/Zjvgyol6VFvRkX/vR+Vc4jQkC+hVqc2pM8ODewa9r' crossorigin='anonymous'></script>
         <script src='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/js/bootstrap.min.js' integrity='sha384-0pUGZvbkm6XF6gxjEnlmuGrJXVbNuzT9qBBavbLwCsOGabYfZo0T0to5eqruptLy' crossorigin='anonymous'></script>
+
+        <style>
+        .custom-popover {
+            --bs-border-width: 2px;
+        }
+        </style>
     "
 
     # Add header cards to the beginning of the report before the main results
@@ -854,7 +860,7 @@ function Invoke-GenerateReport {
                 <td>$($Result.Config)</td>
                 <td class='text-center ";if($($Result.Result -eq "Yes")) {$output += "table-success'"} else {$output += "table-danger'"};$output+=">$($Result.Result)";if($Result.DescriptionNote){$output += "<br><i class='bi-exclamation-triangle opacity-75' data-bs-title='$($Result.DescriptionNote)' data-bs-toggle='tooltip' data-bs-placement='top' style='font-size: 1.3rem'></i>"};$output += "</td>
                 <td>$($Result.Description)</td>
-                <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"};$output += "</td>
+                <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-custom-class='custom-popover' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"};$output += "</td>
             </tr>"
         }
 
