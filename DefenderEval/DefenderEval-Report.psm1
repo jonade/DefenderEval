@@ -773,6 +773,7 @@ function Invoke-GenerateReport {
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 
         <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH' crossorigin='anonymous'>
+        <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css'>
 
         <title>$ReportTitle</title>
     </head>
@@ -851,8 +852,8 @@ function Invoke-GenerateReport {
             $output += "<tr><th scope='row'></th>
                 <td>$($Result.Check)</td>
                 <td>$($Result.Config)</td>
-                <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
-                <td>$($Result.Description)";if($Result.DescriptionNote){$output += "<br><small><strong>Note:</strong> $($Result.DescriptionNote)</small>"};$output += "</td>
+                <td class='text-center ";if($($Result.Result -eq "Yes")) {$output += "table-success'"} else {$output += "table-danger'"};$output+=">$($Result.Result)";if($Result.DescriptionNote){$output += "<br><i class='bi-exclamation-triangle opacity-75' data-bs-title='$($Result.DescriptionNote)' data-bs-toggle='tooltip' data-bs-placement='top' style='font-size: 1.3rem'></i>"};$output += "</td>
+                <td>$($Result.Description)</td>
                 <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"};$output += "</td>
             </tr>"
         }
@@ -898,6 +899,8 @@ function Invoke-GenerateReport {
             <script>
             const popoverTriggerList = document.querySelectorAll('[data-bs-toggle=`"popover`"]')
             const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
+            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=`"tooltip`"]')
+            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
             </script>
         </div>
     </body>
