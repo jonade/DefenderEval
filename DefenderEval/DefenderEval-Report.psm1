@@ -153,7 +153,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $BAFS
         Description = "Always use the cloud to block new malware within seconds"
-        Fix = "Set-MpPreference -DisableBlockAtFirstSeen 0"
+        Fix = "Set-MpPreference -DisableBlockAtFirstSeen `$false"
     }
 
 
@@ -169,7 +169,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $IOAV
         Description = "Scan all downloaded files and attachments"
-        Fix = "Set-MpPreference -DisableIOAVProtection 0"
+        Fix = "Set-MpPreference -DisableIOAVProtection `$false"
     }
 
 
@@ -220,7 +220,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $RTPMonitoring
         Description = "Constantly monitor files and processes for known malware modifications"
-        Fix = "Set-MpPreference -DisableRealtimeMonitoring 0"
+        Fix = "Set-MpPreference -DisableRealtimeMonitoring `$false"
     }
 
     switch ($MpPref.RealTimeScanDirection) {
@@ -252,7 +252,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $BehaviorMonitoring
         Description = "Constantly monitor for known malware behaviors - even in 'clean' files and running programs"
-        Fix = "Set-MpPreference -DisableBehaviorMonitoring 0"
+        Fix = "Set-MpPreference -DisableBehaviorMonitoring `$false"
     }
 
 
@@ -268,7 +268,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $ScriptScanning
         Description = "Scan scripts as soon as they're seen or run"
-        Fix = "Set-MpPreference -DisableScriptScanning 0"
+        Fix = "Set-MpPreference -DisableScriptScanning `$false"
     }
 
 
@@ -284,7 +284,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $RemovableDriveScanning
         Description = "Scan removable drives as soon as they're inserted or mounted"
-        Fix = "Set-MpPreference -DisableRemovableDriveScanning 0"
+        Fix = "Set-MpPreference -DisableRemovableDriveScanning `$false"
     }
 
 
@@ -338,7 +338,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $ArchiveScan
         Description = "Scan files contained within archives"
-        Fix = "Set-MpPreference -DisableArchiveScanning 0"
+        Fix = "Set-MpPreference -DisableArchiveScanning `$false"
     }
 
 
@@ -354,7 +354,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $EmailScan
         Description = "Scan email stored within files (e.g. .PST)"
-        Fix = "Set-MpPreference -DisableEmailScanning 0"
+        Fix = "Set-MpPreference -DisableEmailScanning `$false"
     }
 
     # Protection updates - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#manage-product-and-protection-updates
@@ -371,7 +371,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $SignatureUpdate
         Description = "Check to update signatures before running a scheduled scan"
-        Fix = "Set-MpPreference -CheckForSignaturesBeforeRunningScan 1"
+        Fix = "Set-MpPreference -CheckForSignaturesBeforeRunningScan `$true"
     }
 
     switch ($MpPref.UILockdown) {
@@ -386,7 +386,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $UILockdown
         Description = "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
-        Fix = "Set-MpPreference -UILockdown 0"
+        Fix = "Set-MpPreference -UILockdown `$false"
     }
 
 
@@ -405,7 +405,7 @@ Function Get-DefenderEvaluationReport {
             Result = $Result
             Config = $NPServer
             Description = "Enable Network Protection on Windows Server"
-            Fix = "Set-MpPreference -AllowNetworkProtectionOnWinServer 1"
+            Fix = "Set-MpPreference -AllowNetworkProtectionOnWinServer `$true"
         }
 
         switch ($MpPref.AllowNetworkProtectionDownLevel) {
@@ -420,7 +420,7 @@ Function Get-DefenderEvaluationReport {
             Result = $Result
             Config = $NPDownlevel
             Description = "Enable Network Protection on downlevel Windows Server"
-            Fix = "Set-MpPreference -AllowNetworkProtectionDownLevel 1"
+            Fix = "Set-MpPreference -AllowNetworkProtectionDownLevel `$true"
         }
 
         switch ($MpPref.AllowDatagramProcessingOnWinServer) {
@@ -435,7 +435,7 @@ Function Get-DefenderEvaluationReport {
             Result = $Result
             Config = $NPDatagram
             Description = "Enable Datagram procesing on Windows Server"
-            Fix = "Set-MpPreference -AllowDatagramProcessingOnWinServer 1"
+            Fix = "Set-MpPreference -AllowDatagramProcessingOnWinServer `$true"
         }
 
         switch ($MpPref.DisableAutoExclusions) {
@@ -450,7 +450,7 @@ Function Get-DefenderEvaluationReport {
             Result = $Result
             Config = $AutoExclude
             Description = "Disable automatic exclusions on Windows Server"
-            Fix = "Set-MpPreference -DisableAutoExclusions 1"
+            Fix = "Set-MpPreference -DisableAutoExclusions `$false"
         }
     }
 
