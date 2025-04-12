@@ -223,6 +223,22 @@ Function Get-DefenderEvaluationReport {
         Fix = "Set-MpPreference -DisableRealtimeMonitoring 0"
     }
 
+    switch ($MpPref.RealTimeScanDirection) {
+        1 {$RTPDirection = "Incoming Files"}
+        2 {$RTPDirection = "Outgoing Files"}
+        default {$RTPDirection = "Incoming and Outgoing Files"}
+    }
+    if ($RTPDirection -eq "Incoming and Outgoing Files") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Real-time Scanning"
+        Check = "RealTimeScanDirection"
+        Result = $Result
+        Config = $RTPDirection
+        Description = "Specifies scanning configuration for incoming and outgoing files on NTFS volumes"
+        Fix = "Set-MpPreference -RealTimeScanDirection 0"
+    }
+
 
     switch ($MpPref.DisableBehaviorMonitoring) {
         $true {$BehaviorMonitoring = "Disabled"}
@@ -269,6 +285,23 @@ Function Get-DefenderEvaluationReport {
         Config = $RemovableDriveScanning
         Description = "Scan removable drives as soon as they're inserted or mounted"
         Fix = "Set-MpPreference -DisableRemovableDriveScanning 0"
+    }
+
+
+    switch ($MpPref.EnableFileHashComputation) {
+        $true {$FileHash = "Enabled"}
+        default {$FileHash = "Disabled"}
+    }
+    if ($FileHash -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+
+    $Results += New-Object -TypeName psobject -Property @{
+        Topic = "Real-time Scanning"
+        Check = "EnableFileHashComputation"
+        Result = $Result
+        Config = $FileHash
+        Description = "Specifies whether to enable file hash computation for files that are scanned."
+        DescriptionNote = "This improves blocking accuracy of file IoCs, however it may impact device performance"
+        Fix = "Set-MpPreference -EnableFileHashComputation `$true"
     }
 
 
@@ -819,7 +852,7 @@ function Invoke-GenerateReport {
                 <td>$($Result.Check)</td>
                 <td>$($Result.Config)</td>
                 <td";if($($Result.Result -eq "Yes")) {$output += " class='table-success'"} else {$output += " class='table-danger'"};$output+=">$($Result.Result)</td>
-                <td>$($Result.Description)</td>
+                <td>$($Result.Description)";if($Result.DescriptionNote){$output += "<br><small><strong>Note:</strong> $($Result.DescriptionNote)</small>"};$output += "</td>
                 <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"};$output += "</td>
             </tr>"
         }
