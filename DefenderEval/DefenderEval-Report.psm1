@@ -95,11 +95,12 @@ Function Get-DefenderEvaluationReport {
     # Evaluate Settings
 
     # Collect details of configured Exclusions
-    $Exclusions = @{
+    $Exclusions = [ordered]@{
         'Excluded Paths' = @($MpPref.ExclusionPath)
         'Excluded Processes' = @($MpPref.ExclusionExtension)
         'Excluded Extensions' = @($MpPref.ExclusionExtension)
         'Excluded IPs' = @($MpPref.ExclusionIpAddress)
+        'Controlled Folder Access Excluded Applications' = @($MpPref.ControlledFolderAccessAllowedApplications)
     }
 
 
@@ -869,9 +870,11 @@ function Invoke-GenerateReport {
 
     # Add details of Exclusions which have been configured
     foreach ($Ex in $Exclusions.Keys){
+        $CollapsingName = ($Ex -replace ' ','') # Friendly name to allow collapsing of table rows
+
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
-            <h5 class='card-header bg-dark-subtle'>$($Ex)</h5>
+            <div class='h5 card-header bg-dark-subtle'>$($Ex)";if ($($Exclusions.$Ex).Count -ge 10){$output += "<button type='button' class='btn btn-secondary btn-sm float-end' data-bs-toggle='collapse' data-bs-target='#collapse$CollapsingName'>Collapse</button>"}; $output += "</div>
                 <table class='table table-hover table-striped mb-0'>
                     <tbody>"
 
@@ -883,12 +886,14 @@ function Invoke-GenerateReport {
         if ($($Exclusions.$Ex).Count -eq 0) {
             # Add a single row indicating there are no exclusions configured
             $newRow = ($Row -replace ("<ReplaceMe>","None"))
-            $newRow = ($newRow -replace ("<td ","<td class='table-success'")) # Update the formatting if there are no exclusions
+            $newRow = ($newRow -replace ("<td ","<td class='table-success'")) # Update the background formatting if there are no exclusions
             $output += $newRow
         } else {
             # Add a row for each configured exclusion
             foreach ($obj in ($Exclusions.$Ex)) {
-                $output += ($Row -replace ("<ReplaceMe>","<small>$Obj</small>"))
+                $newRow = ($Row -replace ("<ReplaceMe>","<small>$Obj</small>"))
+                $newRow = ($newRow -replace ("<td ","<td class='collapse' id='collapse$CollapsingName'")) # Allow rows to be collapsed
+                $output += $newRow
             }
         }
 
@@ -907,6 +912,8 @@ function Invoke-GenerateReport {
             const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
             const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=`"tooltip`"]')
             const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
+            const collapseElementList = document.querySelectorAll('.collapse')
+            const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
             </script>
         </div>
     </body>
