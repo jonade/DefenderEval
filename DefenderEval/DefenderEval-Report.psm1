@@ -124,10 +124,10 @@ Function Get-DefenderEvaluationReport {
 
 
     switch ($MpPref.SubmitSamplesConsent) {
+        0 {$SubmitType = "AlwaysPrompt"}
         1 {$SubmitType = "SafeSamples"}
         2 {$SubmitType = "NeverSend"}
         3 {$SubmitType = "AllSamples"}
-        4 {$SubmitType = "AlwaysPrompt"}
     }
 
     if ($SubmitType -eq "AllSamples") {$Result="Yes"} else {$Result="No"}
