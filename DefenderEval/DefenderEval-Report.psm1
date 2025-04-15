@@ -138,7 +138,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $SubmitType
         Description = "Automatically submit samples to increase group protection"
-        Fix = "Set-MpPreference -SubmitSamplesConsent Always"
+        Fix = "Set-MpPreference -SubmitSamplesConsent SendAllSamples"
     }
 
 
