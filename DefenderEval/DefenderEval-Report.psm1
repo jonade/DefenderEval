@@ -875,8 +875,9 @@ function Invoke-GenerateReport {
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
             <div class='h5 card-header bg-dark-subtle'>$($Ex)";if ($($Exclusions.$Ex).Count -ge 10){$output += "<button type='button' class='btn btn-secondary btn-sm float-end' data-bs-toggle='collapse' data-bs-target='#collapse$CollapsingName'>Collapse</button>"}; $output += "</div>
-                <table class='table table-hover table-striped mb-0'>
-                    <tbody>"
+                <table class='table table-hover table-striped mb-0'>"
+        # Allow the exclusion table rows to be collapsed
+        if($($Exclusions.$Ex).Count -ge 10){$output +="<tbody class='collapse' id='collapse$CollapsingName'>"}else{$output +="<tbody>"}
 
         # Define how to add a new row to the Exclusions tables
         $Row = "<tr>
@@ -892,7 +893,6 @@ function Invoke-GenerateReport {
             # Add a row for each configured exclusion
             foreach ($obj in ($Exclusions.$Ex)) {
                 $newRow = ($Row -replace ("<ReplaceMe>","<small>$Obj</small>"))
-                $newRow = ($newRow -replace ("<td ","<td class='collapse' id='collapse$CollapsingName'")) # Allow rows to be collapsed
                 $output += $newRow
             }
         }
