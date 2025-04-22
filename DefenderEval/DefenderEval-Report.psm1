@@ -2,7 +2,8 @@
 
 <#
 .SYNOPSIS
-    Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint
+    Verify configuration are aligning with recommended settings when performing an 
+    evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint
 
 .DESCRIPTION
 
