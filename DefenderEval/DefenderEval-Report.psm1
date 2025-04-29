@@ -204,7 +204,7 @@ Function Get-DefenderEvaluationReport {
         Check = "CloudExtendedTimeout"
         Result = $Result
         Config = $MpPref.CloudExtendedTimeout
-        Description = "Set cloud block time-out to 1 minute"
+        Description = "Extend cloud block time-out to 1 minute"
         Fix = "Set-MpPreference -CloudExtendedTimeout 50"
     }
 
