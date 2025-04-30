@@ -825,7 +825,13 @@ function Invoke-GenerateReport {
     </div>"
 
 
-    $output += "<div class='card text-center p-0";if($($MpComputerStatus.IsTamperProtected -eq $true)) {$output += " text-bg-success"} else {$output += " text-bg-danger"};$output+="' style='width: 18rem;'>
+    $output += "<div class='card text-center p-0"
+    if($($MpComputerStatus.IsTamperProtected -eq $true)) {
+        $output += " text-bg-success"
+    } else {
+        $output += " text-bg-danger"
+    }
+    $output += "' style='width: 18rem;'>
         <div class='card-header'><h5>Tamper Protection</h5></div>
             <div class='card-body'>
             <p class='card-text mb-2 align-middle'><strong>Enabled:</strong> $($MpComputerStatus.IsTamperProtected)</p>
@@ -859,9 +865,23 @@ function Invoke-GenerateReport {
             $output += "<tr><th scope='row'></th>
                 <td>$($Result.Check)</td>
                 <td>$($Result.Config)</td>
-                <td class='text-center ";if($($Result.Result -eq "Yes")) {$output += "table-success'"} else {$output += "table-danger'"};$output+=">$($Result.Result)";if($Result.DescriptionNote){$output += "<br><i class='bi-exclamation-triangle opacity-75' data-bs-title='$($Result.DescriptionNote)' data-bs-toggle='tooltip' data-bs-placement='top' style='font-size: 1.3rem'></i>"};$output += "</td>
+                <td class='text-center "
+                if ($($Result.Result -eq "Yes")) {
+                    $output += "table-success'"
+                } else {
+                    $output += "table-danger'"
+                }
+                $output += ">$($Result.Result)"
+                if ($Result.DescriptionNote) {
+                    $output += "<br><i class='bi-exclamation-triangle opacity-75' data-bs-title='$($Result.DescriptionNote)' data-bs-toggle='tooltip' data-bs-placement='top' style='font-size: 1.3rem'></i>"
+                }
+                $output += "</td>
                 <td>$($Result.Description)</td>
-                <td>";if($($Result.Result -eq "No") -and $Result.Fix) {$output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-custom-class='custom-popover' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"};$output += "</td>
+                <td>"
+                if ($($Result.Result -eq "No") -and $Result.Fix) {
+                    $output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-custom-class='custom-popover' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"
+                }
+                $output += "</td>
             </tr>"
         }
 
@@ -874,10 +894,18 @@ function Invoke-GenerateReport {
 
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
-            <div class='h5 card-header bg-dark-subtle'>$($Ex)";if ($($Exclusions.$Ex).Count -ge 10){$output += "<button type='button' class='btn btn-secondary btn-sm float-end' data-bs-toggle='collapse' data-bs-target='#collapse$CollapsingName'>Collapse</button>"}; $output += "</div>
+            <div class='h5 card-header bg-dark-subtle'>$($Ex)"
+            if ($($Exclusions.$Ex).Count -ge 10) {
+                $output += "<button type='button' class='btn btn-secondary btn-sm float-end' data-bs-toggle='collapse' data-bs-target='#collapse$CollapsingName'>Collapse</button>"
+            }
+            $output += "</div>
                 <table class='table table-hover table-striped mb-0'>"
         # Allow the exclusion table rows to be collapsed
-        if($($Exclusions.$Ex).Count -ge 10){$output +="<tbody class='collapse' id='collapse$CollapsingName'>"}else{$output +="<tbody>"}
+        if ($($Exclusions.$Ex).Count -ge 10) {
+            $output += "<tbody class='collapse' id='collapse$CollapsingName'>"
+        } else {
+            $output += "<tbody>"
+        }
 
         # Define how to add a new row to the Exclusions tables
         $Row = "<tr>
