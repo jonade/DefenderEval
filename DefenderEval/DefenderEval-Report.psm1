@@ -781,23 +781,33 @@ function Invoke-GenerateReport {
     </head>
       <body>
         <div class='container my-5'>
+            <div class='toast-container position-fixed top-0 end-0 p-2'>
+                <div class='toast show align-items-center' role='alert' aria-live='polite' aria-atomic='true' data-bs-autohide='false'>
+                    <div class='toast-header'>
+                        <strong class='me-auto'>Rate this report!</strong>
+                        <button type='button' class='btn-close me-2 m-auto' data-bs-dismiss='toast' aria-label='Close'></button>
+                    </div>
+                    <div class='toast-body'>
+                        <div class='rating-card p-0 m-0'>
+                            <div class='star-rating animated-stars'>
+                                <input type='radio' id='star5' name='rating' value='5' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-5','_blank');`" />
+                                <label for='star5' class='bi bi-star-fill'></label>
+                                <input type='radio' id='star4' name='rating' value='4' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-4','_blank');`" />
+                                <label for='star4' class='bi bi-star-fill'></label>
+                                <input type='radio' id='star3' name='rating' value='3' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-3','_blank');`" />
+                                <label for='star3' class='bi bi-star-fill'></label>
+                                <input type='radio' id='star2' name='rating' value='2' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-2','_blank');`" />
+                                <label for='star2' class='bi bi-star-fill'></label>
+                                <input type='radio' id='star1' name='rating' value='1' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-1','_blank');`" />
+                                <label for='star1' class='bi bi-star-fill'></label>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
             <div class='position-relative p-5 text-center text-muted bg-dark-subtle border border-dashed rounded-5'>
                 <svg xmlns='http://www.w3.org/2000/svg'  viewBox='0 0 48 48' width='60px' height='60px'><path fill='#0370c8' d='M24,44c-0.552,0-1-0.448-1-1s0.448-1,1-1V44z'/><path fill='#0f5094' d='M25,43c0,0.552-0.448,1-1,1v-2C24.552,42,25,42.448,25,43z'/><circle cx='42' cy='11' r='1' fill='#0883d9'/><circle cx='6' cy='11' r='1' fill='#33bff0'/><path fill='#0f5094' d='M24,43l0.427,0.907c0,0,15.144-7.9,18.08-19.907H24V43z'/><path fill='#0883d9' d='M43,11l-1-1c-11.122,0-11.278-6-18-6v20h18.507C42.822,22.712,43,21.378,43,20C43,16.856,43,11,43,11 z'/><path fill='#0370c8' d='M24,43l-0.427,0.907c0,0-15.144-7.9-18.08-19.907H24V43z'/><path fill='#33bff0' d='M5,11l1-1c11.122,0,11.278-6,18-6v20H5.493C5.178,22.712,5,21.378,5,20C5,16.856,5,11,5,11z'/></svg><h1 class='text-body-emphasis'>$ReportHeading</h1>
                 <p class='col-lg-10 mx-auto mb-4'>$IntroText</p>
-                <div class='rating-card p-0 m-2'>
-                    <div class='star-rating animated-stars'>
-                        <input type='radio' id='star5' name='rating' value='5' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-5','_blank');`" />
-                        <label for='star5' class='bi bi-star-fill'></label>
-                        <input type='radio' id='star4' name='rating' value='4' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-4','_blank');`" />
-                        <label for='star4' class='bi bi-star-fill'></label>
-                        <input type='radio' id='star3' name='rating' value='3' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-3','_blank');`" />
-                        <label for='star3' class='bi bi-star-fill'></label>
-                        <input type='radio' id='star2' name='rating' value='2' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-2','_blank');`" />
-                        <label for='star2' class='bi bi-star-fill'></label>
-                        <input type='radio' id='star1' name='rating' value='1' onclick=`"window.open('https://aka.ms/DefenderEval-Feedback-1','_blank');`" />
-                        <label for='star1' class='bi bi-star-fill'></label>
-                    </div>
-                </div>
                 <a class='btn btn-primary px-4 mb-4' href='https://aka.ms/mdavevaluate' role='button' target='_blank'>Learn more</a>
                 <div class='text-right'>Report generated: $((get-date).ToString("dd MMMM yyyy - HH:mm:ss"))</div>
                 </div>
