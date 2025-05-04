@@ -781,7 +781,7 @@ function Invoke-GenerateReport {
     </head>
       <body>
         <div class='container my-5'>
-            <div class='toast-container position-fixed top-0 end-0 p-2'>
+            <div class='toast-container position-fixed top-0 end-0 p-3'>
                 <div class='toast show align-items-center' role='alert' aria-live='polite' aria-atomic='true' data-bs-autohide='false'>
                     <div class='toast-header'>
                         <strong class='me-auto'>Rate this report!</strong>
@@ -818,6 +818,10 @@ function Invoke-GenerateReport {
         <style>
         .custom-popover {
             --bs-border-width: 2px;
+        }
+
+        .toast {
+            max-width: 240px;
         }
     
         .star-rating {
