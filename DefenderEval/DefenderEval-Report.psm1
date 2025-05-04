@@ -927,7 +927,7 @@ function Invoke-GenerateReport {
                 }
                 $output += ">$($Result.Result)"
                 if ($Result.DescriptionNote) {
-                    $output += "<br><i class='bi-exclamation-triangle opacity-75' data-bs-title='$($Result.DescriptionNote)' data-bs-toggle='tooltip' data-bs-placement='top' style='font-size: 1.3rem'></i>"
+                    $output += "<br><i class='bi-exclamation-triangle-fill opacity-75' data-bs-title='$($Result.DescriptionNote)' data-bs-toggle='tooltip' data-bs-placement='top' style='font-size: 1.3rem'></i>"
                 }
                 $output += "</td>
                 <td>$($Result.Description)</td>
