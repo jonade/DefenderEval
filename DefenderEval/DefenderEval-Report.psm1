@@ -69,12 +69,6 @@ Function Invoke-ModuleVersionCheck {
     }
 }
 
-Function Invoke-CheckDefenderRecommendations {
-    Write-Warning "The command to run the report has been changed to 'Get-DefenderEvaluationReport'. Please run that command instead next time."
-
-    Get-DefenderEvaluationReport
-}
-
 Function Get-DefenderEvaluationReport {
     param (
 
@@ -761,6 +755,8 @@ function Invoke-GenerateReport {
         $Results
     )
 
+    $Bootstrap = "<link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7' crossorigin='anonymous'>"
+
     $ReportTitle = "Defender Evaluation report"
     $ReportHeading = "Defender Evaluation report"
     $IntroText = "Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint."
@@ -774,7 +770,8 @@ function Invoke-GenerateReport {
         <meta charset='utf-8'>
         <meta name='viewport' content='width=device-width, initial-scale=1, shrink-to-fit=no'>
 
-        <link href='https://cdn.jsdelivr.net/npm/bootstrap@5.3.5/dist/css/bootstrap.min.css' rel='stylesheet' integrity='sha384-SgOJa3DmI69IUzQ2PVdRZhwQ+dy64/BUtbMJw1MZ8t5HZApcHrRKUc4W0kG879m7' crossorigin='anonymous'>
+        <link href='https://cdn.jsdelivr.net/npm/daisyui@5' rel='stylesheet' type='text/css' />
+        <script src='https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4'></script>
         <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/bootstrap-icons.min.css'>
 
         <title>$ReportTitle</title>
@@ -810,6 +807,17 @@ function Invoke-GenerateReport {
                 <p class='col-lg-10 mx-auto mb-4'>$IntroText</p>
                 <a class='btn btn-primary px-4 mb-4' href='https://aka.ms/mdavevaluate' role='button' target='_blank'>Learn more</a>
                 <div class='text-right'>Report generated: $((get-date).ToString("dd MMMM yyyy - HH:mm:ss"))</div>
+
+
+                <div class='hero bg-base-200 min-h-screen'>
+                    <div class='hero-content text-center'>
+                        <div class='max-w-md'>
+                        <h1 class='text-5xl font-bold'>$ReportHeading</h1>
+                        <p class='py-6'>$IntroText</p>
+                        <a class='btn btn-primary shadow-2xl' href='https://aka.ms/mdavevaluate' role='button' target='_blank'>Learn more</a>
+                        </div>
+                    </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -899,24 +907,23 @@ function Invoke-GenerateReport {
     
     # Create a new table for each category within the results
     foreach ($Topic in ($Results | Group-Object Topic)){
-        $output += "<div class='card m-3'>
-            <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
-        <div class='card-body'>
-        <table class='table table-hover table-striped mb-1'>
-            <thead class='table-light'><tr>
-                <th scope='col'></th>
-                <th scope='col'>Feature</th>
-                <th scope='col'>Current Value</th>
-                <th scope='col'>Follows Recommendation?</th>
-                <th scope='col'>Description</th>
-                <th scope='col'></th>
+        $output += "<div class='divider'></div><div class='overflow-x-auto rounded-box border border-base-content/5 bg-base-100'>
+            <h2><span>$($Topic.Name)</span></h2>
+        <table class='table table-zebra'>
+            <thead><tr>
+                <th></th>
+                <th>Feature</th>
+                <th>Current Value</th>
+                <th>Follows Recommendation?</th>
+                <th>Description</th>
+                <th></th>
             </tr></thead>
             <tbody>
         "
 
         # Add a new row for each result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
-            $output += "<tr><th scope='row'></th>
+            $output += "<tr class='hover:bg-base-300'><th scope='row'></th>
                 <td>$($Result.Check)</td>
                 <td>$($Result.Config)</td>
                 <td class='text-center "
@@ -939,7 +946,7 @@ function Invoke-GenerateReport {
             </tr>"
         }
 
-        $output += "</tbody></table></div></div>"
+        $output += "</tbody></table></div>"
     }
 
     # Add details of Exclusions which have been configured
@@ -969,7 +976,7 @@ function Invoke-GenerateReport {
         if ($($Exclusions.$Ex).Count -eq 0) {
             # Add a single row indicating there are no exclusions configured
             $newRow = ($Row -replace ("<ReplaceMe>","None"))
-            $newRow = ($newRow -replace ("<td ","<td class='table-success'")) # Update the background formatting if there are no exclusions
+            $newRow = ($newRow -replace ("<td ","<td class='bg-success/30'")) # Update the background formatting if there are no exclusions
             $output += $newRow
         } else {
             # Add a row for each configured exclusion
@@ -987,17 +994,11 @@ function Invoke-GenerateReport {
 
     # Add a Footer to the end of the report
     $output += "
-        <div class='card m-3 card-body text-center border-light text-body-secondary'>
-            <p>Version: $ModuleInfo | <a href='https://aka.ms/DefenderEval' class='link-secondary'>GitHub</a></p>
-            <script>
-            const popoverTriggerList = document.querySelectorAll('[data-bs-toggle=`"popover`"]')
-            const popoverList = [...popoverTriggerList].map(popoverTriggerEl => new bootstrap.Popover(popoverTriggerEl))
-            const tooltipTriggerList = document.querySelectorAll('[data-bs-toggle=`"tooltip`"]')
-            const tooltipList = [...tooltipTriggerList].map(tooltipTriggerEl => new bootstrap.Tooltip(tooltipTriggerEl))
-            const collapseElementList = document.querySelectorAll('.collapse')
-            const collapseList = [...collapseElementList].map(collapseEl => new bootstrap.Collapse(collapseEl))
-            </script>
-        </div>
+        <footer class='footer footer-horizontal footer-center bg-base-200 text-base-content rounded p-10'>
+        <aside>
+            <p>Version: $ModuleInfo | <a href='https://aka.ms/DefenderEval' class='neutral-content'>GitHub</a></p>
+        </aside>
+        </footer>
     </body>
     </html>
     "
