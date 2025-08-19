@@ -30,7 +30,7 @@ CompanyName = 'Microsoft'
 Copyright = '(c) 2025 Microsoft. All rights reserved.'
 
 # Description of the functionality provided by this module
-Description = 'Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint'
+Description = 'Verify configuration are aligning with recommended settings when performing an evaluation of Microsoft Defender Antivirus and Microsoft Defender for Endpoint. After installation use the Get-DefenderEvaluationReport command to run a report.'
 
 # Minimum version of the PowerShell engine required by this module
 PowerShellVersion = '5.1'
