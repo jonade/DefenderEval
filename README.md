@@ -1,7 +1,8 @@
 # Verify configuration for a Microsoft Defender for Endpoint evaluation
-* https://learn.microsoft.com/en-us/defender-endpoint/evaluate-microsoft-defender-antivirus
 
-Generates a report to assess if the features in Defender Antivirus and Defender for Endpoint are configured according to best practices, particularly during evaluations of product effectiveness, such as internal red-teaming exercises.
+Generates a report to check whether Defender Antivirus and Defender for Endpoint features are configured according to recommended settings for product evaluation scenarios, such as internal red-teaming exercises.
+
+* https://learn.microsoft.com/en-us/defender-endpoint/evaluate-microsoft-defender-antivirus
 
 ![Example Image](docs/example.png)
 
