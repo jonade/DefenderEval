@@ -8,6 +8,10 @@
 .DESCRIPTION
 
 
+.PARAMETER NoPopup
+    Skip opening the generated HTML file in the browser after completion.
+
+
 .NOTES
     Jonathan Devere-Ellery
     Cloud Solution Architect - Microsoft
@@ -71,7 +75,7 @@ Function Invoke-ModuleVersionCheck {
 
 Function Get-DefenderEvaluationReport {
     param (
-
+        [switch]$NoPopup
     )
 
     # Prechecks
@@ -1005,5 +1009,7 @@ function Invoke-GenerateReport {
 
     $output | Out-File -FilePath $FilePath
 
-    Invoke-Expression "&'$FilePath'"
+    if (!$NoPopup) {
+        Invoke-Expression "&'$FilePath'"
+    }
 }
