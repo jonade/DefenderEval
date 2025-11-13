@@ -689,11 +689,23 @@ Function Get-DefenderEvaluationReport {
         "33ddedf1-c6e0-47cb-833e-de6133960387" = "Block rebooting machine in Safe Mode";
         "b2b3f03d-6a65-4f7b-a9c7-1c7ef74a9ba4" = "Block untrusted and unsigned processes that run from USB";
         "c0033c00-d16d-4114-a5a0-dc9b3a7d2ceb" = "Block use of copied or impersonated system tools";
-        "a8f5898e-1dc8-49a9-9878-85004b8a61e6" = "Block Webshell creation for Servers";
-        "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b" = "Block Win32 API calls from Office macros";
         "c1db55ab-c21a-4637-bb3f-a12568109d35" = "Use advanced protection against ransomware";
     }
 
+    # Add ASRs to hashtable only when report is run on an appropriate OS
+    # Server OS
+    if ($($ComputerInfo.WindowsInstallationType) -eq "Server") {
+        $ASRDefinitions += @{
+            "a8f5898e-1dc8-49a9-9878-85004b8a61e6" = "Block Webshell creation for Servers";
+        }
+    }
+    
+    # Client OS
+    if ($($ComputerInfo.WindowsInstallationType) -eq "Client") {
+        $ASRDefinitions += @{
+            "92e97fa1-2edf-4476-bdd6-9dd0b4dddc7b" = "Block Win32 API calls from Office macros";
+        }
+    }
 
     $ASRIds = $MpPref.AttackSurfaceReductionRules_Ids
     $ASRActions = $MpPref.AttackSurfaceReductionRules_Actions
