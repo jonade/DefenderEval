@@ -9,7 +9,7 @@ Generates a report to check whether Defender Antivirus and Defender for Endpoint
 
 ## Installation Steps
 
-Install the module from the PowerShell Gallery by running:
+Install the module from the [PowerShell Gallery](https://www.powershellgallery.com/packages/DefenderEval/) by running:
 
 `Install-Module DefenderEval`
 
@@ -18,6 +18,6 @@ The current PowerShell execution policy can be verified by running `Get-Executio
 `Set-ExecutionPolicy -ExecutionPolicy RemoteSigned -Scope CurrentUser`
 
 
-After installation of the module, run the following as an Administrator to generate the report:
+After installation of the module, run the following from an elevated (as Administrator) PowerShell window to generate the report:
 
 `Get-DefenderEvaluationReport`
