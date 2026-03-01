@@ -108,9 +108,10 @@ Function Get-DefenderEvaluationReport {
 
     # Cloud Protection - https://learn.microsoft.com/en-us/defender-endpoint/microsoft-defender-antivirus-using-powershell#cloud-protection-features
 
-    switch ($MpPref.MAPSReporting) {
-        {1 -or 2} {$MAPSReporting = "Advanced"}
-        default {$MAPSReporting = "Disabled"}
+    if ($MpPref.MAPSReporting -eq 1 -or $MpPref.MAPSReporting -eq 2) {
+        $MAPSReporting = "Advanced"
+    } else {
+        $MAPSReporting = "Disabled"
     }
 
     if ($MAPSReporting -eq "Advanced") {$Result="Yes"} else {$Result="No"}
@@ -378,10 +379,10 @@ Function Get-DefenderEvaluationReport {
     }
 
     switch ($MpPref.UILockdown) {
-        $true {$UILockdown = "Disabled"}
+        $false {$UILockdown = "Disabled"}
         default {$UILockdown = "Enabled"}
     }
-    if ($UILockdown -eq "Enabled") {$Result="Yes"} else {$Result="No"}
+    if ($UILockdown -eq "Disabled") {$Result="Yes"} else {$Result="No"}
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic = "Scan settings"
