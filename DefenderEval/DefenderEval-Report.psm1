@@ -172,7 +172,7 @@ Function Get-DefenderEvaluationReport {
         Check = "IOAVProtection"
         Result = $Result
         Config = $IOAV
-        Description = "Scan all downloaded files and attachments"
+        Description = "Scan all downloaded files and attachments carrying a Mark of the Web"
         Fix = "Set-MpPreference -DisableIOAVProtection `$false"
     }
 
@@ -206,7 +206,7 @@ Function Get-DefenderEvaluationReport {
         Check = "CloudExtendedTimeout"
         Result = $Result
         Config = $MpPref.CloudExtendedTimeout
-        Description = "Extend cloud block time-out to 1 minute"
+        Description = "Extend cloud block time-out to 1 minute. Ensures sufficient time for cloud protection to determine a verdict"
         Fix = "Set-MpPreference -CloudExtendedTimeout 50"
     }
 
