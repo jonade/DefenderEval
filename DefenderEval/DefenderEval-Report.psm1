@@ -122,6 +122,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $MAPSReporting
         Description = "Enable the Microsoft Defender Cloud for near-instant protection and increased protection"
+        Url = "https://learn.microsoft.com/defender-endpoint/enable-cloud-protection-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -MAPSReporting Advanced"
     }
 
@@ -141,6 +142,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $SubmitType
         Description = "Automatically submit samples to increase group protection"
+        Url = "https://learn.microsoft.com/defender-endpoint/cloud-protection-microsoft-antivirus-sample-submission"
         Fix = "Set-MpPreference -SubmitSamplesConsent SendAllSamples"
     }
 
@@ -157,6 +159,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $BAFS
         Description = "Always use the cloud to block new malware within seconds"
+        Url = "https://learn.microsoft.com/defender-endpoint/configure-block-at-first-sight-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -DisableBlockAtFirstSeen `$false"
     }
 
@@ -172,7 +175,7 @@ Function Get-DefenderEvaluationReport {
         Check = "IOAVProtection"
         Result = $Result
         Config = $IOAV
-        Description = "Scan all downloaded files and attachments"
+        Description = "Scan all downloaded files and attachments carrying a mark of the web"
         Fix = "Set-MpPreference -DisableIOAVProtection `$false"
     }
 
@@ -195,6 +198,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $CloudBlockLevel
         Description = "Set cloud block level to at least 'High'"
+        Url = "https://learn.microsoft.com/defender-endpoint/specify-cloud-protection-level-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -CloudBlockLevel High"
     }
 
@@ -206,7 +210,8 @@ Function Get-DefenderEvaluationReport {
         Check = "CloudExtendedTimeout"
         Result = $Result
         Config = $MpPref.CloudExtendedTimeout
-        Description = "Extend cloud block time-out to 1 minute"
+        Description = "Extend cloud block time-out to 1 minute. Ensures sufficient time for cloud protection to determine a verdict"
+        Url = "https://learn.microsoft.com/defender-endpoint/configure-cloud-block-timeout-period-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -CloudExtendedTimeout 50"
     }
 
@@ -256,6 +261,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $BehaviorMonitoring
         Description = "Constantly monitor for known malware behaviors - even in 'clean' files and running programs"
+        Url = "https://learn.microsoft.com/defender-endpoint/behavior-monitor"
         Fix = "Set-MpPreference -DisableBehaviorMonitoring `$false"
     }
 
@@ -272,6 +278,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $ScriptScanning
         Description = "Scan scripts as soon as they're seen or run"
+        Url = "https://learn.microsoft.com/defender-endpoint/amsi-on-mdav"
         Fix = "Set-MpPreference -DisableScriptScanning `$false"
     }
 
@@ -324,6 +331,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $PUA
         Description = "Prevent grayware, adware, and other potentially unwanted apps from installing"
+        Url = "https://learn.microsoft.com/defender-endpoint/detect-block-potentially-unwanted-apps-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -PUAProtection Enabled"
     }
 
@@ -390,6 +398,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $UILockdown
         Description = "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
+        Url = "https://learn.microsoft.com/defender-endpoint/prevent-end-user-interaction-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -UILockdown `$false"
     }
 
@@ -409,6 +418,7 @@ Function Get-DefenderEvaluationReport {
             Result = $Result
             Config = $NPServer
             Description = "Enable Network Protection on Windows Server"
+            Url = "https://learn.microsoft.com/defender-endpoint/enable-network-protection"
             Fix = "Set-MpPreference -AllowNetworkProtectionOnWinServer `$true"
         }
 
@@ -424,6 +434,7 @@ Function Get-DefenderEvaluationReport {
             Result = $Result
             Config = $NPDownlevel
             Description = "Enable Network Protection on downlevel Windows Server"
+            Url = "https://learn.microsoft.com/defender-endpoint/enable-network-protection"
             Fix = "Set-MpPreference -AllowNetworkProtectionDownLevel `$true"
         }
 
@@ -473,6 +484,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $NetworkProtection
         Description = "Block connections to known bad IP addresses and other network connections with Network protection"
+        Url = "https://learn.microsoft.com/defender-endpoint/enable-network-protection"
         Fix = "Set-MpPreference -EnableNetworkProtection Enabled"
     }
 
@@ -670,6 +682,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $CFA
         Description = "Prevent malicious and suspicious apps (such as ransomware) from making changes to protected folders with Controlled folder access"
+        Url = "https://learn.microsoft.com/defender-endpoint/controlled-folders"
         Fix = "Set-MpPreference -EnableControlledFolderAccess Enabled"
     }
 
@@ -747,6 +760,7 @@ Function Get-DefenderEvaluationReport {
             Result = $Result
             Config = $ASRState
             Description = $ASRName
+            Url = "https://learn.microsoft.com/defender-endpoint/attack-surface-reduction"
             Fix = "Add-MpPreference -AttackSurfaceReductionRules_Ids $($ASR.ID) -AttackSurfaceReductionRules_Actions Enabled"
         }
     }
@@ -760,6 +774,7 @@ Function Get-DefenderEvaluationReport {
                 Result = "No"
                 Config = "Missing"
                 Description = $($ASRDefinition.Value)
+                Url = "https://learn.microsoft.com/defender-endpoint/attack-surface-reduction"
                 Fix = "Add-MpPreference -AttackSurfaceReductionRules_Ids $($ASRDefinition.Name) -AttackSurfaceReductionRules_Actions Enabled"
             }
         }
@@ -933,7 +948,12 @@ function Invoke-GenerateReport {
         # Add a new row for each result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
             $output += "<tr><th scope='row'></th>
-                <td>$($Result.Check)</td>
+                <td>$($Result.Check)"
+                if ($Result.Url) {
+                    $output += "<a href='$($Result.Url)' target='_blank'><i class='bi bi-link-45deg'></i></a>"
+                }
+                $output += "
+                </td>
                 <td>$($Result.Config)</td>
                 <td class='text-center "
                 if ($($Result.Result -eq "Yes")) {
