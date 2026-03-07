@@ -295,6 +295,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $RemovableDriveScanning
         Description = "Scan removable drives as soon as they're inserted or mounted"
+        Url = "https://learn.microsoft.com/defender-endpoint/configure-advanced-scan-types-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -DisableRemovableDriveScanning `$false"
     }
 
@@ -312,6 +313,7 @@ Function Get-DefenderEvaluationReport {
         Config = $FileHash
         Description = "Specifies whether to enable file hash computation for files that are scanned."
         DescriptionNote = "This improves blocking accuracy of file IoCs, however it may impact device performance"
+        Url = "https://learn.microsoft.com/defender-endpoint/indicators-overview"
         Fix = "Set-MpPreference -EnableFileHashComputation `$true"
     }
 
@@ -349,7 +351,8 @@ Function Get-DefenderEvaluationReport {
         Check = "ArchiveScanning"
         Result = $Result
         Config = $ArchiveScan
-        Description = "Scan files contained within archives"
+        Description = "Scan files contained within archives such as .zip or .rar files"
+        Url = "https://learn.microsoft.com/defender-endpoint/configure-advanced-scan-types-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -DisableArchiveScanning `$false"
     }
 
@@ -366,6 +369,7 @@ Function Get-DefenderEvaluationReport {
         Result = $Result
         Config = $EmailScan
         Description = "Scan email stored within files (e.g. .PST)"
+        Url = "https://learn.microsoft.com/defender-endpoint/configure-advanced-scan-types-microsoft-defender-antivirus"
         Fix = "Set-MpPreference -DisableEmailScanning `$false"
     }
 
