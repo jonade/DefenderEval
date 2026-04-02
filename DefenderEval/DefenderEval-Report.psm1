@@ -1046,7 +1046,7 @@ function Invoke-GenerateReport {
     # Export the generated HTML file
 
     $Folder = (Get-Item .).FullName
-    $OutFile = "DefenderEval_$(Get-Date -Format ("yyyymmdd-HHmmss")).html"
+    $OutFile = "DefenderEval_$(Get-Date -Format ("yyyyMMdd-HHmmss")).html"
     $FilePath = Join-Path -Path $Folder -ChildPath $OutFile
 
     $output | Out-File -FilePath $FilePath
