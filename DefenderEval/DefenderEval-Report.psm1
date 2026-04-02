@@ -99,7 +99,7 @@ Function Get-DefenderEvaluationReport {
     # Collect details of configured Exclusions
     $Exclusions = [ordered]@{
         'Excluded Paths' = @($MpPref.ExclusionPath)
-        'Excluded Processes' = @($MpPref.ExclusionExtension)
+        'Excluded Processes' = @($MpPref.ExclusionProcess)
         'Excluded Extensions' = @($MpPref.ExclusionExtension)
         'Excluded IPs' = @($MpPref.ExclusionIpAddress)
         'Controlled Folder Access Excluded Applications' = @($MpPref.ControlledFolderAccessAllowedApplications)
