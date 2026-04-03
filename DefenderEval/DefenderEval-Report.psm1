@@ -1052,6 +1052,6 @@ function Invoke-GenerateReport {
     $output | Out-File -FilePath $FilePath
 
     if (!$NoPopup) {
-        Invoke-Expression "&'$FilePath'"
+        Invoke-Item $FilePath
     }
 }
