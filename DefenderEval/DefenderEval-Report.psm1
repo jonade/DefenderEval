@@ -800,7 +800,7 @@ function Invoke-GenerateReport {
     [version]$ModuleInfo = (Get-Module -Name DefenderEval | Select-Object -First 1).Version
 
      # Output start
-     $output += "<!doctype html>
+     $output = "<!doctype html>
      <html lang='en'>
      <head>
         <!-- Required meta tags -->
