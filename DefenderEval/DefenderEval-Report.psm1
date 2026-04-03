@@ -398,7 +398,7 @@ Function Get-DefenderEvaluationReport {
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic = "Scan settings"
-        Check = " UILockdown"
+        Check = "UILockdown"
         Result = $Result
         Config = $UILockdown
         Description = "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
