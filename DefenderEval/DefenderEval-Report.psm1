@@ -99,7 +99,7 @@ Function Get-DefenderEvaluationReport {
     # Collect details of configured Exclusions
     $Exclusions = [ordered]@{
         'Excluded Paths' = @($MpPref.ExclusionPath)
-        'Excluded Processes' = @($MpPref.ExclusionExtension)
+        'Excluded Processes' = @($MpPref.ExclusionProcess)
         'Excluded Extensions' = @($MpPref.ExclusionExtension)
         'Excluded IPs' = @($MpPref.ExclusionIpAddress)
         'Controlled Folder Access Excluded Applications' = @($MpPref.ControlledFolderAccessAllowedApplications)
@@ -398,7 +398,7 @@ Function Get-DefenderEvaluationReport {
 
     $Results += New-Object -TypeName psobject -Property @{
         Topic = "Scan settings"
-        Check = " UILockdown"
+        Check = "UILockdown"
         Result = $Result
         Config = $UILockdown
         Description = "Ensure notifications allow you to boot the PC into a specialized malware removal environment"
@@ -800,7 +800,7 @@ function Invoke-GenerateReport {
     [version]$ModuleInfo = (Get-Module -Name DefenderEval | Select-Object -First 1).Version
 
      # Output start
-     $output += "<!doctype html>
+     $output = "<!doctype html>
      <html lang='en'>
      <head>
         <!-- Required meta tags -->
@@ -1046,12 +1046,12 @@ function Invoke-GenerateReport {
     # Export the generated HTML file
 
     $Folder = (Get-Item .).FullName
-    $OutFile = "DefenderEval_$(Get-Date -Format ("yyyymmdd-HHmmss")).html"
+    $OutFile = "DefenderEval_$(Get-Date -Format ("yyyyMMdd-HHmmss")).html"
     $FilePath = Join-Path -Path $Folder -ChildPath $OutFile
 
     $output | Out-File -FilePath $FilePath
 
     if (!$NoPopup) {
-        Invoke-Expression "&'$FilePath'"
+        Invoke-Item $FilePath
     }
 }
