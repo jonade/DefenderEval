@@ -811,6 +811,74 @@ function Invoke-GenerateReport {
         <link rel='stylesheet' href='https://cdn.jsdelivr.net/npm/bootstrap-icons@1.13.1/font/bootstrap-icons.min.css' integrity='sha256-pdY4ejLKO67E0CM2tbPtq1DJ3VGDVVdqAR6j3ZwdiE4=' crossorigin='anonymous'>
 
         <title>$ReportTitle</title>
+
+        <style>
+        .custom-popover {
+            --bs-border-width: 2px;
+        }
+
+        .toast {
+            max-width: 240px;
+        }
+    
+        .star-rating {
+            direction: rtl;
+            display: inline-block;
+            cursor: pointer;
+        }
+
+        .star-rating input {
+            display: none;
+        }
+
+        .star-rating label {
+            color: #91a6ff;
+            font-size: 24px;
+            padding: 0 2px;
+            cursor: pointer;
+            transition: all 0.2s ease;
+        }
+
+        .star-rating label:hover,
+        .star-rating label:hover ~ label,
+        .star-rating input:checked ~ label {
+            color: #f7b731;
+        }
+
+        .table td:nth-child(2),
+        .table td:nth-child(3),
+        .table td:nth-child(5),
+        .table th:nth-child(2),
+        .table th:nth-child(3),
+        .table th:nth-child(5) {
+            white-space: nowrap;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+
+        .card {
+            overflow: hidden;
+        }
+
+        .card .table > tbody > tr:last-child > td {
+            border-bottom: 0;
+        }
+
+        .table th, .table td {
+            padding: 0.4rem 0.5rem;
+        }
+
+        .bi-box-arrow-up-right {
+            opacity: 0.85;
+            font-size: 0.85em;
+            margin-left: 0.3em;
+            transition: opacity 0.2s ease;
+        }
+
+        .bi-box-arrow-up-right:hover {
+            opacity: 1;
+        }
+        </style>
     </head>
       <body>
         <div class='container my-5'>"
@@ -840,7 +908,7 @@ function Invoke-GenerateReport {
                 </div>
             </div>"
             }
-            $output += "<div class='position-relative p-5 text-center text-muted bg-dark-subtle border border-dashed rounded-5'>
+            $output += "<div class='position-relative p-5 text-center text-muted bg-dark-subtle rounded-4'>
                 <svg xmlns='http://www.w3.org/2000/svg'  viewBox='0 0 48 48' width='60px' height='60px'><path fill='#0370c8' d='M24,44c-0.552,0-1-0.448-1-1s0.448-1,1-1V44z'/><path fill='#0f5094' d='M25,43c0,0.552-0.448,1-1,1v-2C24.552,42,25,42.448,25,43z'/><circle cx='42' cy='11' r='1' fill='#0883d9'/><circle cx='6' cy='11' r='1' fill='#33bff0'/><path fill='#0f5094' d='M24,43l0.427,0.907c0,0,15.144-7.9,18.08-19.907H24V43z'/><path fill='#0883d9' d='M43,11l-1-1c-11.122,0-11.278-6-18-6v20h18.507C42.822,22.712,43,21.378,43,20C43,16.856,43,11,43,11 z'/><path fill='#0370c8' d='M24,43l-0.427,0.907c0,0-15.144-7.9-18.08-19.907H24V43z'/><path fill='#33bff0' d='M5,11l1-1c11.122,0,11.278-6,18-6v20H5.493C5.178,22.712,5,21.378,5,20C5,16.856,5,11,5,11z'/></svg><h1 class='text-body-emphasis'>$ReportHeading</h1>
                 <p class='col-lg-10 mx-auto mb-4'>$IntroText</p>
                 <a class='btn btn-primary px-4 mb-4' href='https://aka.ms/mdavevaluate' role='button' target='_blank'>Learn more</a>
@@ -974,7 +1042,7 @@ function Invoke-GenerateReport {
             $CheckHtml = $Result.Check -replace '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})', "<span style='white-space:nowrap'>`$1</span>"
             $output += "<tr><td>$CheckHtml"
                 if ($Result.Url) {
-                    $output += "<a href='$($Result.Url)' target='_blank'><i class='bi bi-link-45deg'></i></a>"
+                    $output += "<a href='$($Result.Url)' target='_blank'><i class='bi bi-box-arrow-up-right'></i></a>"
                 }
                 $output += "
                 </td>
@@ -993,7 +1061,7 @@ function Invoke-GenerateReport {
                 <td>$($Result.Description)</td>
                 <td>"
                 if ($($Result.Result -eq "No") -and $Result.Fix) {
-                    $output += "<button type='button' class='btn btn-secondary float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-custom-class='custom-popover' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"
+                    $output += "<button type='button' class='btn btn-secondary btn-sm float-end' data-bs-html='true' data-bs-container='body' data-bs-toggle='popover' data-bs-placement='left' data-bs-custom-class='custom-popover' data-bs-content='<p class=`"user-select-all m-0 font-monospace`"><strong>$($Result.Fix)</strong></p>'>How to fix</button>"
                 }
                 $output += "</td>
             </tr>"
