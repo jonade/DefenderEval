@@ -759,7 +759,7 @@ Function Get-DefenderEvaluationReport {
 
         $Results += New-Object -TypeName psobject -Property @{
             Topic = "Exploit protection"
-            Check = "ASR Rule ($($ASR.ID))"
+            Check = "ASR Rule: $($ASR.ID)"
             ASR = $ASR.ID
             Result = $Result
             Config = $ASRState
@@ -774,7 +774,7 @@ Function Get-DefenderEvaluationReport {
         if ($Results.ASR -notcontains $($ASRDefinition.Name)) {
             $Results += New-Object -TypeName psobject -Property @{
                 Topic = "Exploit protection"
-                Check = "ASR Rule ($($ASRDefinition.Name))"
+                Check = "ASR Rule: $($ASRDefinition.Name)"
                 Result = "No"
                 Config = "Missing"
                 Description = $($ASRDefinition.Value)
@@ -883,6 +883,25 @@ function Invoke-GenerateReport {
             color: #f7b731;
         }
 
+        .table td:nth-child(2),
+        .table td:nth-child(3),
+        .table td:nth-child(5),
+        .table th:nth-child(2),
+        .table th:nth-child(3),
+        .table th:nth-child(5) {
+            white-space: nowrap;
+            overflow-wrap: normal;
+            word-break: normal;
+        }
+        .card {
+            overflow: hidden;
+        }
+
+        .card .table > tbody > tr:last-child > td {
+            border-bottom: 0;
+        }
+
+
         </style>
     "
 
@@ -936,29 +955,30 @@ function Invoke-GenerateReport {
     foreach ($Topic in ($Results | Group-Object Topic)){
         $output += "<div class='card m-3'>
             <h5 class='card-header bg-dark-subtle'>$($Topic.Name)</h5>
-        <div class='card-body'>
-        <table class='table table-hover table-striped mb-1'>
+        <div class='card-body p-0'>
+        <div class='table-responsive'>
+        <table class='table table-hover table-striped mb-0' style='table-layout:fixed;min-width:1100px'>
             <thead class='table-light'><tr>
-                <th scope='col'></th>
-                <th scope='col'>Feature</th>
-                <th scope='col'>Current Value</th>
-                <th scope='col'>Follows Recommendation?</th>
+                <th scope='col' style='white-space:nowrap;width:25%'>Feature</th>
+                <th scope='col' style='white-space:nowrap;width:16%'>Current Value</th>
+                <th scope='col' style='white-space:nowrap;width:16%'>Is Recommended?</th>
                 <th scope='col'>Description</th>
-                <th scope='col'></th>
+                <th scope='col' style='width:8%'></th>
             </tr></thead>
             <tbody>
         "
 
         # Add a new row for each result
         foreach ($Result in ($Results | Where-Object {$_.Topic -eq $Topic.Name})) {
-            $output += "<tr><th scope='row'></th>
-                <td>$($Result.Check)"
+            # Wrap GUIDs in a nowrap span to prevent line breaks at hyphens within the GUID
+            $CheckHtml = $Result.Check -replace '([0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12})', "<span style='white-space:nowrap'>`$1</span>"
+            $output += "<tr><td>$CheckHtml"
                 if ($Result.Url) {
                     $output += "<a href='$($Result.Url)' target='_blank'><i class='bi bi-link-45deg'></i></a>"
                 }
                 $output += "
                 </td>
-                <td>$($Result.Config)</td>
+                <td style='white-space:nowrap'>$($Result.Config)</td>
                 <td class='text-center "
                 if ($($Result.Result -eq "Yes")) {
                     $output += "table-success'"
@@ -979,7 +999,7 @@ function Invoke-GenerateReport {
             </tr>"
         }
 
-        $output += "</tbody></table></div></div>"
+        $output += "</tbody></table></div></div></div>"
     }
 
     # Add details of Exclusions which have been configured
@@ -988,11 +1008,11 @@ function Invoke-GenerateReport {
 
         # Add one table for each exclusion type        
         $output += "<div class='card m-3'>
-            <div class='h5 card-header bg-dark-subtle'>$($Ex)"
+            <h5 class='card-header bg-dark-subtle'>$($Ex)"
             if ($($Exclusions.$Ex).Count -ge 10) {
                 $output += "<button type='button' class='btn btn-secondary btn-sm float-end' data-bs-toggle='collapse' data-bs-target='#collapse$CollapsingName'>Collapse</button>"
             }
-            $output += "</div>
+            $output += "</h5>
                 <table class='table table-hover table-striped mb-0'>"
         # Allow the exclusion table rows to be collapsed
         if ($($Exclusions.$Ex).Count -ge 10) {
@@ -1003,7 +1023,7 @@ function Invoke-GenerateReport {
 
         # Define how to add a new row to the Exclusions tables
         $Row = "<tr>
-        <td scope='row'><ReplaceMe></td></tr>
+        <td><ReplaceMe></td></tr>
         "
 
         if ($($Exclusions.$Ex).Count -eq 0) {
@@ -1021,7 +1041,7 @@ function Invoke-GenerateReport {
 
         $output += "
             </tbody></table>
-            </div></div>"
+            </div>"
     }
 
 
