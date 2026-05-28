@@ -961,7 +961,7 @@ function Invoke-GenerateReport {
             <thead class='table-light'><tr>
                 <th scope='col' style='white-space:nowrap;width:25%'>Feature</th>
                 <th scope='col' style='white-space:nowrap;width:16%'>Current Value</th>
-                <th scope='col' style='white-space:nowrap;width:16%'>Recommended</th>
+                <th scope='col' style='white-space:nowrap;width:16%'>Is Recommended?</th>
                 <th scope='col'>Description</th>
                 <th scope='col' style='width:8%'></th>
             </tr></thead>
