@@ -975,22 +975,20 @@ function Invoke-GenerateReport {
 
     # Add header cards to the beginning of the report before the main results
 
-    $output += "<div class='row justify-content-around'>" # Start of header cards
+    $output += "<div class='row g-5 m-3'>" # Start of header cards
 
-
-    $output += "<div class='card text-bg-light text-center p-0 border-info' style='width: 18rem;'>
-        <div class='card-header h5 mb-0 text-bg-info'>Computer ID</div>
-        <div class='card-body mb-0 small'>
+    $output += "<div class='col-md-4'><div class='card text-center h-100'>
+        <h5 class='card-header bg-dark-subtle'>Computer ID</h5>
+        <div class='card-body small'>
             <p class='card-text user-select-all'>$($MpPref.ComputerID)</p>
             <p class='card-text'><strong>Platform:</strong> $($MpComputerStatus.AMProductVersion)</p>
             <p class='card-text'><strong>Engine:</strong> $($MpComputerStatus.AMEngineVersion)</p>
         </div>
-    </div>"
+    </div></div>"
 
-
-    $output += "<div class='card text-bg-light text-center p-0 border-info' style='width: 18rem;'>
-        <div class='card-header h5 text-bg-info'>Operating System</div>
-            <div class='card-body small'>
+    $output += "<div class='col-md-4'><div class='card text-center h-100'>
+        <h5 class='card-header bg-dark-subtle'>Operating System</h5>
+        <div class='card-body small'>
             <p class='card-text'><strong>Name:</strong> $(($ComputerInfo.OsName).TrimStart('Microsoft '))</p>"
             if ($($ComputerInfo.WindowsInstallationType) -eq "Client") {
                 $output += "<p class='card-text'><strong>Version:</strong> $($ComputerInfo.OSDisplayVersion)</p>"
@@ -998,23 +996,21 @@ function Invoke-GenerateReport {
             $output += "
             <p class='card-text'><strong>Type:</strong> $($ComputerInfo.WindowsInstallationType)</p>
         </div>
-    </div>"
+    </div></div>"
 
-
-    $output += "<div class='card text-center p-0"
+    $output += "<div class='col-md-4'><div class='card text-center h-100'>
+        <h5 class='card-header"
     if($($MpComputerStatus.IsTamperProtected -eq $true)) {
         $output += " text-bg-success"
     } else {
         $output += " text-bg-danger"
     }
-    $output += "' style='width: 18rem;'>
-        <div class='card-header'><h5>Tamper Protection</h5></div>
-            <div class='card-body'>
-            <p class='card-text mb-2 align-middle'><strong>Enabled:</strong> $($MpComputerStatus.IsTamperProtected)</p>
-            <p class='card-text align-middle'><strong>Source:</strong> $($MpComputerStatus.TamperProtectionSource)</p>
+    $output += "'>Tamper Protection</h5>
+        <div class='card-body small'>
+            <p class='card-text'><strong>Enabled:</strong> $($MpComputerStatus.IsTamperProtected)</p>
+            <p class='card-text'><strong>Source:</strong> $($MpComputerStatus.TamperProtectionSource)</p>
         </div>
-    </div>"
-
+    </div></div>"
 
     $output += "</div>" # End of header cards
 
